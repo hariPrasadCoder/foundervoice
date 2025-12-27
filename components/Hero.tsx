@@ -151,7 +151,7 @@ export const Hero: React.FC = () => {
            <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#222_0%,#fff_50%,#222_100%)] opacity-30" />
            <div className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-4 py-1.5 text-xs font-mono text-gray-300 backdrop-blur-3xl border border-white/5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse"></span>
-              ACCEPTING Q4 FOUNDERS
+              Accepting New Founders
            </div>
         </div>
 

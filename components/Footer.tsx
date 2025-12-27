@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Section } from './ui/Section';
 import { Button } from './ui/Button';
-import { Check } from 'lucide-react';
+import { Check, ShieldCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
+  const [isAnnual, setIsAnnual] = useState(false);
+
   return (
     <footer className="bg-background pt-20 pb-10 border-t border-white/5 relative">
       
@@ -12,6 +14,30 @@ export const Footer: React.FC = () => {
          <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">Simple, transparent models.</h2>
             <p className="text-secondary text-lg">No hidden fees. Pause or cancel anytime.</p>
+            
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+               <span className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-white' : 'text-gray-500'}`}>
+                  Monthly
+               </span>
+               <button
+                  onClick={() => setIsAnnual(!isAnnual)}
+                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-background ${
+                     isAnnual ? 'bg-white' : 'bg-gray-700'
+                  }`}
+                  role="switch"
+                  aria-checked={isAnnual}
+               >
+                  <span
+                     className={`inline-block h-5 w-5 transform rounded-full bg-black transition-transform ${
+                        isAnnual ? 'translate-x-8' : 'translate-x-1'
+                     }`}
+                  />
+               </button>
+               <span className={`text-sm font-medium transition-colors ${isAnnual ? 'text-white' : 'text-gray-500'}`}>
+                  Annual
+               </span>
+            </div>
          </div>
 
          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -23,8 +49,13 @@ export const Footer: React.FC = () => {
                
                <div className="mb-8">
                   <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">Full Ghostwriting</div>
-                  <div className="text-5xl font-bold mb-2">$4k<span className="text-lg text-black/40 font-medium">/mo</span></div>
-                  <p className="text-black/60 font-medium">We run your entire presence.</p>
+                  <div className="text-5xl font-bold mb-2">
+                     {isAnnual ? '$3k' : '$4k'}
+                     <span className="text-lg text-black/40 font-medium">/mo</span>
+                  </div>
+                  <p className="text-black/60 font-medium">
+                     {isAnnual ? 'For 12 months' : 'For 3 months'}
+                  </p>
                </div>
                
                <div className="space-y-4 mb-10 flex-1">
@@ -68,6 +99,19 @@ export const Footer: React.FC = () => {
                >
                  Contact Sales
                </Button>
+            </div>
+         </div>
+
+         {/* ROI Guarantee */}
+         <div className="mt-12 max-w-2xl mx-auto">
+            <div className="bg-gradient-to-r from-white/5 to-white/10 border border-white/20 rounded-2xl p-6 md:p-8 flex items-start gap-4">
+               <ShieldCheck size={24} className="text-white shrink-0 mt-1" />
+               <div>
+                  <h3 className="text-white font-semibold text-lg mb-2">ROI Guarantee</h3>
+                  <p className="text-gray-300 text-sm md:text-base">
+                     If you don't get ROI within 3 months, we work for you for free for the next 3 months.
+                  </p>
+               </div>
             </div>
          </div>
       </Section>
