@@ -27,7 +27,7 @@ export const Services: React.FC = () => {
               </div>
               <h3 className="text-2xl font-semibold text-white mb-4">We capture your voice. <br/>Perfectly.</h3>
               <p className="text-gray-400 max-w-md">
-                No generic AI content. No "bro-etry". We interview you, extract your insights, and turn them into compelling narratives. 
+                No generic AI content. No cliché business speak. We interview you, extract your insights, and turn them into compelling narratives. 
                 You spend 1 hour a week talking. We handle the rest.
               </p>
             </div>

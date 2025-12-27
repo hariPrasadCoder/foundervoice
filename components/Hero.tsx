@@ -168,29 +168,34 @@ export const Hero: React.FC = () => {
 
         {/* Subheading */}
         <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up delay-200">
-          Premium ghostwriting for funded AI & SaaS founders. 
-          Turn your LinkedIn into a magnet for talent and investors—without writing a single word yourself.
+          Premium ghostwriting for funded AI & SaaS founders. Turn LinkedIn into a magnet for clients, talent and investors. Zero writing from your end.
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up delay-300">
-          <Button showArrow className="h-12 px-8 text-base bg-white text-black hover:bg-gray-200 hover:scale-105 transition-transform duration-200">
+          <Button 
+            showArrow 
+            className="h-12 px-8 text-base bg-white text-black hover:bg-gray-200 hover:scale-105 transition-transform duration-200"
+            data-cal-namespace="foundervoice"
+            data-cal-link="hari-prasad/foundervoice"
+            data-cal-config='{"layout":"month_view"}'
+          >
              Book Your Strategy Call
           </Button>
-          <Button variant="outline" className="h-12 px-8 text-base hover:scale-105 transition-transform duration-200">
+          <Button 
+            variant="outline" 
+            className="h-12 px-8 text-base hover:scale-105 transition-transform duration-200"
+            onClick={() => {
+              const element = document.getElementById('methodology');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+          >
             View Methodology
           </Button>
         </div>
 
-        {/* Social Proof / Ticker */}
-        <div className="mt-24 pt-8 border-t border-white/5 opacity-0 animate-fade-in-up delay-500">
-          <p className="text-xs font-mono text-gray-600 mb-6 uppercase tracking-widest">Trusted by founders backed by</p>
-          <div className="flex justify-center gap-12 md:gap-20 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
-            {['Y Combinator', 'Sequoia', 'a16z', 'Lightspeed'].map((name, i) => (
-              <span key={name} className="text-lg font-bold font-display hover:text-white transition-colors cursor-default hover:scale-110 transform duration-300" style={{ transitionDelay: `${i * 100}ms` }}>{name}</span>
-            ))}
-          </div>
-        </div>
 
       </Section>
     </div>

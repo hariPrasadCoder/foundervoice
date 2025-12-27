@@ -35,7 +35,14 @@ export const Footer: React.FC = () => {
                      </div>
                   ))}
                </div>
-               <Button className="w-full !bg-black !text-white hover:!bg-black/80 shadow-none border-none h-14 rounded-xl">Book Strategy Call</Button>
+               <Button 
+                 className="w-full !bg-black !text-white hover:!bg-black/80 shadow-none border-none h-14 rounded-xl"
+                 data-cal-namespace="foundervoice"
+                 data-cal-link="hari-prasad/foundervoice"
+                 data-cal-config='{"layout":"month_view"}'
+               >
+                 Book Strategy Call
+               </Button>
             </div>
 
             {/* Card 2 (Multi-Executive/Custom) */}
@@ -52,8 +59,34 @@ export const Footer: React.FC = () => {
                   <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> PR Integration</div>
                   <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Dedicated Account Manager</div>
                </div>
-               <Button variant="outline" className="w-full h-14 rounded-xl">Contact Sales</Button>
+               <Button 
+                 variant="outline" 
+                 className="w-full h-14 rounded-xl"
+                 data-cal-namespace="foundervoice"
+                 data-cal-link="hari-prasad/foundervoice"
+                 data-cal-config='{"layout":"month_view"}'
+               >
+                 Contact Sales
+               </Button>
             </div>
+         </div>
+      </Section>
+
+      {/* Big Font Section */}
+      <Section className="!py-0 mb-20 pb-20">
+         <div className="text-center pb-16">
+            <h2 className="text-6xl md:text-8xl font-bold text-white leading-tight mb-12">
+               Ready to build<br/>
+               <span className="text-gray-600">your voice?</span>
+            </h2>
+            <Button 
+               className="!text-xl !px-12 !py-6 !h-auto !rounded-full !bg-gradient-to-r !from-white !to-gray-200 !text-black hover:!from-gray-100 hover:!to-gray-300 !shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:!shadow-[0_0_60px_rgba(255,255,255,0.4)] !scale-110 hover:!scale-115 transition-all duration-300"
+               data-cal-namespace="foundervoice"
+               data-cal-link="hari-prasad/foundervoice"
+               data-cal-config='{"layout":"month_view"}'
+            >
+               Get Started Today
+            </Button>
          </div>
       </Section>
 

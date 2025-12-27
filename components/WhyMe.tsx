@@ -1,6 +1,7 @@
 import React from 'react';
 import { Section } from './ui/Section';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import hariImage from '../images/hari.jpg';
 
 export const WhyMe: React.FC = () => {
   return (
@@ -20,7 +21,7 @@ export const WhyMe: React.FC = () => {
            <p className="text-lg text-secondary mb-8 leading-relaxed">
              Most agencies assign you a junior copywriter who doesn't know what an API is.
              <br/><br/>
-             I'm a founder. I understand Cap Tables, ARR, and Product-Market Fit. I write content that respects your intelligence and your audience's time.
+             I'm a founder. I understand Tech, ARR, and Product-Market Fit. I write content that respects your intelligence and your audience's time.
            </p>
 
            <div className="space-y-4">
@@ -56,7 +57,7 @@ export const WhyMe: React.FC = () => {
                  {/* Header */}
                  <div className="flex items-center justify-between mb-12 relative z-10">
                     <div className="flex items-center gap-4">
-                       <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-bold text-lg shadow-lg shadow-white/10">H</div>
+                       <img src={hariImage} alt="Hari Prasad" className="w-12 h-12 rounded-full object-cover shadow-lg shadow-white/10" />
                        <div>
                           <div className="text-white font-medium text-lg">Hari Prasad</div>
                           <div className="text-sm text-gray-500">Founder • 46k Followers</div>

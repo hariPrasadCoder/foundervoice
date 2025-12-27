@@ -55,7 +55,13 @@ export const Navbar: React.FC = () => {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="primary" className="!px-5 !py-2 !text-xs !h-9">
+            <Button 
+              variant="primary" 
+              className="!px-5 !py-2 !text-xs !h-9"
+              data-cal-namespace="foundervoice"
+              data-cal-link="hari-prasad/foundervoice"
+              data-cal-config='{"layout":"month_view"}'
+            >
               Book a Call
             </Button>
           </div>
@@ -85,7 +91,16 @@ export const Navbar: React.FC = () => {
               </a>
             ))}
             <div className="w-full max-w-xs h-px bg-white/10 my-4" />
-            <Button fullWidth variant="primary" onClick={() => setIsMobileMenuOpen(false)}>Book Strategy Call</Button>
+            <Button 
+              fullWidth 
+              variant="primary" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              data-cal-namespace="foundervoice"
+              data-cal-link="hari-prasad/foundervoice"
+              data-cal-config='{"layout":"month_view"}'
+            >
+              Book Strategy Call
+            </Button>
           </div>
         </div>
       )}
