@@ -14,29 +14,42 @@ export const Process: React.FC = () => {
             <div className="space-y-6">
                {[
                   { title: "01. Strategy Deep Dive", desc: "One 60-min call to map your narrative, audience, and key themes." },
-                  { title: "02. The Content Sprint", desc: "I interview you once a month. Then I write everything. You review and approve." },
+                  { title: "02. The Content Sprint", desc: "I interview you once a week. Then I write everything. You review and approve." },
                   { title: "03. Growth & Iteration", desc: "We publish, engage, and report. You watch the opportunities roll in." }
                ].map((step, i) => (
-                  <div key={i} className="flex gap-4">
-                     <div className="mt-1 font-mono text-primary opacity-50">{step.title.split('.')[0]}</div>
+                  <div key={i} className="flex gap-4 group">
+                     <div className="mt-1 font-mono text-primary opacity-50 group-hover:opacity-100 transition-opacity">{step.title.split('.')[0]}</div>
                      <div>
-                        <h3 className="text-white font-medium">{step.title.split('. ')[1]}</h3>
+                        <h3 className="text-white font-medium group-hover:text-primary transition-colors">{step.title.split('. ')[1]}</h3>
                         <p className="text-sm text-gray-500">{step.desc}</p>
                      </div>
                   </div>
                ))}
             </div>
          </div>
-         <div className="relative">
-             {/* Abstract Visual for Process */}
-             <div className="aspect-square rounded-full bg-gradient-to-tr from-surfaceHighlight to-black border border-white/5 relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-                <div className="w-2/3 h-2/3 rounded-full border border-white/10 flex items-center justify-center relative">
-                   <div className="absolute inset-0 border-t border-primary/50 rounded-full animate-spin duration-[10s]"></div>
-                   <div className="w-1/2 h-1/2 rounded-full bg-primary/10 backdrop-blur-md flex items-center justify-center">
-                      <div className="w-3 h-3 bg-primary rounded-full shadow-[0_0_20px_rgba(255,77,0,0.5)]"></div>
-                   </div>
+         <div className="relative flex justify-center items-center py-10">
+             {/* Complex Gyroscope Animation */}
+             <div className="relative w-64 h-64 flex items-center justify-center">
+                
+                {/* Outer Ring */}
+                <div className="absolute inset-0 rounded-full border border-white/5 animate-spin-slow"></div>
+                <div className="absolute inset-4 rounded-full border border-dashed border-white/10 animate-spin-reverse-slow"></div>
+                
+                {/* Middle Ring */}
+                <div className="absolute inset-12 rounded-full border border-white/10 animate-[spin_8s_linear_infinite]">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_rgba(255,51,0,0.8)]"></div>
                 </div>
+
+                {/* Inner Ring */}
+                <div className="absolute inset-20 rounded-full border border-primary/20 animate-[spin_4s_linear_infinite_reverse]"></div>
+
+                {/* Core */}
+                <div className="absolute w-16 h-16 rounded-full bg-primary/10 backdrop-blur-md flex items-center justify-center animate-pulse">
+                   <div className="w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_rgba(255,77,0,0.8)]"></div>
+                </div>
+
+                {/* Glow Backdrop */}
+                <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full -z-10"></div>
              </div>
          </div>
        </div>
