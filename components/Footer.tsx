@@ -93,7 +93,6 @@ export const Footer: React.FC = () => {
       {/* Final Footer Links */}
       <div className="container mx-auto px-6 max-w-7xl pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[10px] text-black font-bold">F</div>
             <span className="text-white font-medium">FounderVoice</span>
          </div>
          

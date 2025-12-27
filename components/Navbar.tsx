@@ -32,9 +32,6 @@ export const Navbar: React.FC = () => {
           
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group relative z-10">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black font-bold text-lg shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-              F
-            </div>
             <span className={`text-lg font-semibold tracking-tight text-white transition-opacity ${isScrolled ? 'hidden md:block' : ''}`}>
               FounderVoice
             </span>
