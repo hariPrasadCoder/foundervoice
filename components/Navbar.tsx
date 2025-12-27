@@ -32,7 +32,7 @@ export const Navbar: React.FC = () => {
           
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group relative z-10">
-            <span className={`text-lg font-semibold tracking-tight text-white transition-opacity ${isScrolled ? 'hidden md:block' : ''}`}>
+            <span className="text-lg font-semibold tracking-tight text-white transition-opacity">
               FounderVoice
             </span>
           </a>
