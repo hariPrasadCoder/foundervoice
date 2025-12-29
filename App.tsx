@@ -18,9 +18,9 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-background min-h-screen text-white selection:bg-primary selection:text-white">
+    <div className="bg-background min-h-screen text-white selection:bg-primary selection:text-white overflow-x-hidden">
       <Navbar />
-      <main>
+      <main className="overflow-x-hidden">
         <Hero />
         <Problem />
         <Reframe />

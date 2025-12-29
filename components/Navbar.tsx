@@ -22,17 +22,21 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <nav className="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none max-w-full">
         <div className={`
           pointer-events-auto
           flex items-center justify-between 
           transition-all duration-500 ease-out
-          ${isScrolled ? 'w-[90%] md:w-[600px] bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 py-2.5 px-4 rounded-full' : 'w-full max-w-7xl py-4 bg-transparent border-transparent'}
+          w-full
+          ${isScrolled 
+            ? 'max-w-[calc(100%-2rem)] md:max-w-[600px] bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 py-2.5 px-4 rounded-full' 
+            : 'max-w-7xl py-3 md:py-4 px-4 md:px-6 bg-transparent border-transparent'
+          }
         `}>
           
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group relative z-10">
-            <span className="text-lg font-semibold tracking-tight text-white transition-opacity">
+          <a href="#" className="flex items-center gap-2 group relative z-10 flex-shrink-0">
+            <span className="text-base md:text-lg font-semibold tracking-tight text-white transition-opacity">
               FounderVoice
             </span>
           </a>
@@ -65,8 +69,9 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Toggle */}
           <button 
-            className="md:hidden text-white p-2 pointer-events-auto"
+            className="md:hidden text-white p-2 pointer-events-auto flex-shrink-0 -mr-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -75,13 +80,13 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl pt-32 px-6 md:hidden">
-          <div className="flex flex-col gap-8 items-center text-center">
+        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl pt-24 px-4 md:hidden overflow-y-auto">
+          <div className="flex flex-col gap-6 items-center text-center min-h-full justify-center pb-20">
             {navLinks.map((link) => (
               <a 
                 key={link.label} 
                 href={link.href}
-                className="text-3xl font-medium text-gray-300 hover:text-white"
+                className="text-2xl sm:text-3xl font-medium text-gray-300 hover:text-white transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
@@ -91,6 +96,7 @@ export const Navbar: React.FC = () => {
             <Button 
               fullWidth 
               variant="primary" 
+              className="max-w-xs"
               onClick={() => setIsMobileMenuOpen(false)}
               data-cal-namespace="foundervoice"
               data-cal-link="hari-prasad/foundervoice"
