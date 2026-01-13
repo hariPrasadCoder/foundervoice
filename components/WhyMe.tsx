@@ -12,23 +12,22 @@ export const WhyMe: React.FC = () => {
         <div className="md:w-1/2">
            <div className="text-primary font-mono text-xs tracking-wider mb-6 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              FOUNDER TO FOUNDER
+              OUTCOMES
            </div>
            <h2 className="font-display text-4xl md:text-5xl font-semibold text-white mb-8 leading-tight">
-             I speak <br/>
-             <span className="text-gray-600">your language.</span>
+             What You Get <br/>
+             <span className="text-gray-600">Not What We Do</span>
            </h2>
            <p className="text-lg text-secondary mb-8 leading-relaxed">
-             Most agencies assign you a junior copywriter who doesn't know what an API is.
-             <br/><br/>
-             I'm a founder. I understand Tech, ARR, and Product-Market Fit. I write content that respects your intelligence and your audience's time.
+             We focus on outcomes, not features. Not likes or impressions.
            </p>
 
            <div className="space-y-4">
               {[
-                "Technical Depth: I can explain complex products simply.",
-                "Proven Reach: 46,000+ organic followers. No ads.",
-                "Zero Fluff: No engagement pods or fake virality."
+                "Warmer inbound conversations",
+                "Faster sales cycles",
+                "Easier hiring",
+                "Stronger investor narrative"
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 text-gray-300">
                   <CheckCircle2 size={18} className="text-white" />
@@ -38,7 +37,7 @@ export const WhyMe: React.FC = () => {
            </div>
 
            <a href="https://www.linkedin.com/in/hariprasad20/" target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex items-center gap-2 text-white border-b border-white/20 pb-1 hover:border-white transition-colors group">
-             Check my LinkedIn profile 
+             See how it works 
              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
            </a>
         </div>

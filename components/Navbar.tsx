@@ -15,14 +15,13 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Method', href: '#method' },
-    { label: 'Why Us', href: '#why-us' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: 'How It Works', href: '#methodology' },
+    { label: 'Outcomes', href: '#why-us' },
   ];
 
   return (
     <>
-      <nav className="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none max-w-full">
+      <nav className="fixed top-4 md:top-6 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none max-w-full">
         <div className={`
           pointer-events-auto
           flex items-center justify-between 
@@ -42,12 +41,12 @@ export const Navbar: React.FC = () => {
           </a>
 
           {/* Desktop Nav Links (Center) */}
-          <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <a 
                 key={link.label} 
                 href={link.href}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors font-medium"
+                className="px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
               >
                 {link.label}
               </a>
@@ -55,15 +54,15 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3 ml-auto">
             <Button 
               variant="primary" 
-              className="!px-5 !py-2 !text-xs !h-9"
+              className="!px-5 !py-2 !text-xs !h-9 whitespace-nowrap"
               data-cal-namespace="foundervoice"
               data-cal-link="hari-prasad/foundervoice"
               data-cal-config='{"layout":"month_view"}'
             >
-              Book a Call
+              Start a 30-Day Pilot
             </Button>
           </div>
 
@@ -80,7 +79,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl pt-24 px-4 md:hidden overflow-y-auto">
+        <div className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-xl pt-24 px-4 md:hidden overflow-y-auto">
           <div className="flex flex-col gap-6 items-center text-center min-h-full justify-center pb-20">
             {navLinks.map((link) => (
               <a 
@@ -102,7 +101,7 @@ export const Navbar: React.FC = () => {
               data-cal-link="hari-prasad/foundervoice"
               data-cal-config='{"layout":"month_view"}'
             >
-              Book Strategy Call
+              Start a 30-Day Pilot
             </Button>
           </div>
         </div>

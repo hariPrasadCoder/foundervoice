@@ -7,6 +7,7 @@ import { Reframe } from './components/Reframe';
 import { Services } from './components/Services';
 import { WhyMe } from './components/WhyMe';
 import { Process } from './components/Process';
+import { Trust } from './components/Trust';
 import { Footer } from './components/Footer';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Services />
         <WhyMe />
         <Process />
+        <Trust />
       </main>
       <Footer />
     </div>

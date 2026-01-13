@@ -9,57 +9,37 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-background pt-20 pb-10 border-t border-white/5 relative">
       
-      {/* Pricing / Offer Section */}
+      {/* Engagement Model Section */}
       <Section id="pricing" className="!py-0 mb-32">
          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">Simple, transparent models.</h2>
-            <p className="text-secondary text-lg">No hidden fees. Pause or cancel anytime.</p>
-            
-            {/* Billing Toggle */}
-            <div className="flex items-center justify-center gap-4 mt-8">
-               <span className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-white' : 'text-gray-500'}`}>
-                  Monthly
-               </span>
-               <button
-                  onClick={() => setIsAnnual(!isAnnual)}
-                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-background ${
-                     isAnnual ? 'bg-white' : 'bg-gray-700'
-                  }`}
-                  role="switch"
-                  aria-checked={isAnnual}
-               >
-                  <span
-                     className={`inline-block h-5 w-5 transform rounded-full bg-black transition-transform ${
-                        isAnnual ? 'translate-x-8' : 'translate-x-1'
-                     }`}
-                  />
-               </button>
-               <span className={`text-sm font-medium transition-colors ${isAnnual ? 'text-white' : 'text-gray-500'}`}>
-                  Annual
-               </span>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">Engagement Model</h2>
+            <p className="text-secondary text-lg">30-day pilot. Limited founders. High-touch, premium.</p>
+            <p className="text-gray-600 text-sm mt-4">This is not a low-cost SaaS.</p>
          </div>
 
          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Card 1 (Highlighted - Full Ghostwriting) */}
+            {/* Card 1 (Highlighted - 30-Day Pilot) */}
             <div className="bg-white text-black rounded-3xl p-8 md:p-10 relative flex flex-col order-1 md:order-none hover:scale-[1.01] transition-transform duration-300">
                <div className="absolute top-8 right-8 px-3 py-1 bg-black/5 text-black text-[10px] font-bold tracking-widest uppercase rounded-full">
-                  Popular
+                  Start Here
                </div>
                
                <div className="mb-8">
-                  <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">Full Ghostwriting</div>
+                  <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">30-Day Pilot</div>
                   <div className="text-5xl font-bold mb-2">
-                     {isAnnual ? '$3k' : '$4k'}
-                     <span className="text-lg text-black/40 font-medium">/mo</span>
+                     $4k
+                     <span className="text-lg text-black/40 font-medium"></span>
                   </div>
-                  <p className="text-black/60 font-medium">
-                     {isAnnual ? 'For 12 months' : 'For 3 months'}
+                  <p className="text-black/60 font-medium mb-3">
+                     Limited capacity. Premium engagement.
+                  </p>
+                  <p className="text-black/80 text-sm leading-relaxed">
+                     The 30-day pilot is a paid engagement to ensure focus, priority, and real execution. This is not a free trial.
                   </p>
                </div>
                
                <div className="space-y-4 mb-10 flex-1">
-                  {['3-4 Strategic Posts / Week', 'Comment & Engagement Mgmt', 'Monthly Performance Report', 'Quarterly Strategy Refresh'].map(i => (
+                  {['Strategy call to align', '30-day pilot period', 'High-touch execution', 'Outcome-focused approach'].map(i => (
                      <div key={i} className="flex gap-3 text-sm font-medium">
                         <Check size={18} className="text-black shrink-0"/>
                         {i}
@@ -72,23 +52,26 @@ export const Footer: React.FC = () => {
                  data-cal-link="hari-prasad/foundervoice"
                  data-cal-config='{"layout":"month_view"}'
                >
-                 Book Strategy Call
+                 Start a 30-Day Pilot
                </Button>
             </div>
 
-            {/* Card 2 (Multi-Executive/Custom) */}
+            {/* Card 2 (Ongoing Engagement) */}
             <div className="bg-[#0A0A0A] rounded-3xl p-8 md:p-10 border border-white/10 flex flex-col order-2 md:order-none">
                <div className="mb-8">
-                  <div className="text-sm font-bold text-gray-500 tracking-wider uppercase mb-2">Multi-Executive</div>
+                  <div className="text-sm font-bold text-gray-500 tracking-wider uppercase mb-2">Ongoing Engagement</div>
                   <div className="text-5xl font-bold text-white mb-2">Custom</div>
-                  <p className="text-gray-500">For larger founding teams.</p>
+                  <p className="text-gray-500 mb-3">After successful pilot.</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                     Continuation happens only after a successful pilot. Ongoing engagement is monthly and premium.
+                  </p>
                </div>
 
                <div className="space-y-4 mb-10 flex-1">
-                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> For Founder + CTO/COO</div>
-                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Company Page Sync</div>
-                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> PR Integration</div>
-                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Dedicated Account Manager</div>
+                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Consistent distribution</div>
+                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Strategic positioning</div>
+                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Outcome tracking</div>
+                  <div className="flex gap-3 text-sm text-gray-400"><Check size={18} className="text-white shrink-0"/> Premium support</div>
                </div>
                <Button 
                  variant="outline" 
@@ -97,21 +80,8 @@ export const Footer: React.FC = () => {
                  data-cal-link="hari-prasad/foundervoice"
                  data-cal-config='{"layout":"month_view"}'
                >
-                 Contact Sales
+                 Book Strategy Call
                </Button>
-            </div>
-         </div>
-
-         {/* ROI Guarantee */}
-         <div className="mt-12 max-w-2xl mx-auto">
-            <div className="bg-gradient-to-r from-white/5 to-white/10 border border-white/20 rounded-2xl p-6 md:p-8 flex items-start gap-4">
-               <ShieldCheck size={24} className="text-white shrink-0 mt-1" />
-               <div>
-                  <h3 className="text-white font-semibold text-lg mb-2">ROI Guarantee</h3>
-                  <p className="text-gray-300 text-sm md:text-base">
-                     If you don't get ROI within 3 months, we work for you for free for the next 3 months.
-                  </p>
-               </div>
             </div>
          </div>
       </Section>
@@ -120,8 +90,8 @@ export const Footer: React.FC = () => {
       <Section className="!py-0 mb-20 pb-20">
          <div className="text-center pb-16">
             <h2 className="text-6xl md:text-8xl font-bold text-white leading-tight mb-12">
-               Ready to build<br/>
-               <span className="text-gray-600">your voice?</span>
+               Ready to turn your work<br/>
+               <span className="text-gray-600">into leverage?</span>
             </h2>
             <Button 
                className="!text-xl !px-12 !py-6 !h-auto !rounded-full !bg-gradient-to-r !from-white !to-gray-200 !text-black hover:!from-gray-100 hover:!to-gray-300 !shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:!shadow-[0_0_60px_rgba(255,255,255,0.4)] !scale-110 hover:!scale-115 transition-all duration-300"
@@ -129,7 +99,7 @@ export const Footer: React.FC = () => {
                data-cal-link="hari-prasad/foundervoice"
                data-cal-config='{"layout":"month_view"}'
             >
-               Get Started Today
+               Start a 30-Day Pilot
             </Button>
          </div>
       </Section>
@@ -147,7 +117,7 @@ export const Footer: React.FC = () => {
          </div>
 
          <div className="text-xs text-gray-600">
-             © 2024 FounderVoice Inc.
+             © 2025 FounderVoice Inc.
          </div>
       </div>
     </footer>

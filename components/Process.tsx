@@ -6,22 +6,30 @@ export const Process: React.FC = () => {
     <Section id="methodology" className="bg-background">
        <div className="grid md:grid-cols-2 gap-12 items-center">
          <div>
-            <h2 className="text-3xl md:text-5xl font-medium text-white mb-6">How we work</h2>
+            <h2 className="text-3xl md:text-5xl font-medium text-white mb-6">How It Works</h2>
             <p className="text-secondary mb-8">
-               A simple, high-touch process designed for busy founders. 
-               We do the heavy lifting. You stay in control.
+               Three simple steps. No complexity.
             </p>
             <div className="space-y-6">
                {[
-                  { title: "01. Strategy Deep Dive", desc: "One 60-min call to map your narrative, audience, and key themes." },
-                  { title: "02. The Content Sprint", desc: "I interview you once a week. Then I write everything. You review and approve." },
-                  { title: "03. Growth & Iteration", desc: "We publish, engage, and report. You watch the opportunities roll in." }
+                  { title: "01. Capture Real Signals", desc: "We extract insights from your actual work. Product decisions. Customer conversations. Technical challenges." },
+                  { title: "02. Turn Into Credible Narratives", desc: "We transform your work into public signals. No fluff. No hype. Just credible positioning." },
+                  { title: "03. Distribute Consistently", desc: "We publish without your effort. You approve or ignore. Distribution happens automatically." }
                ].map((step, i) => (
                   <div key={i} className="flex gap-4 group">
                      <div className="mt-1 font-mono text-primary opacity-50 group-hover:opacity-100 transition-opacity">{step.title.split('.')[0]}</div>
                      <div>
                         <h3 className="text-white font-medium group-hover:text-primary transition-colors">{step.title.split('. ')[1]}</h3>
                         <p className="text-sm text-gray-500">{step.desc}</p>
+                        {i === 0 && (
+                           <div className="mt-4 text-sm text-gray-500">
+                              <p className="font-medium text-gray-400 mb-2">Minimal input, by design</p>
+                              <p className="mb-1">Most founders spend a few minutes per week.</p>
+                              <p className="mb-1">We ask 1–2 specific questions when something happens (a launch, a decision, a hire, a win or loss).</p>
+                              <p className="mb-1">You reply in a sentence, a voice note, or not at all.</p>
+                              <p>We handle the rest.</p>
+                           </div>
+                        )}
                      </div>
                   </div>
                ))}

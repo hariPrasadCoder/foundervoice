@@ -151,28 +151,28 @@ export const Hero: React.FC = () => {
            <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#222_0%,#fff_50%,#222_100%)] opacity-30" />
            <div className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-4 py-1.5 text-xs font-mono text-gray-300 backdrop-blur-3xl border border-white/5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse"></span>
-              Accepting New Founders
+              Limited Capacity
            </div>
         </div>
 
         {/* Main Heading */}
         <div className="relative mb-8 max-w-5xl mx-auto">
            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-white leading-[1.1] md:leading-[1.05] opacity-0 animate-fade-in-up delay-100">
-             You build the product.
+             Turn Your Work Into
              <br />
              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-600 hover:from-primary hover:via-primary hover:to-orange-400 transition-all duration-500 cursor-default">
-               We build your audience.
+               Inbound, Credibility, and Leverage
              </span>
            </h1>
         </div>
 
         {/* Subheading */}
         <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up delay-200">
-          Premium ghostwriting for funded AI & SaaS founders. Turn LinkedIn into a magnet for clients, talent and investors. Zero writing from your end.
+          We use LinkedIn to do it - without you posting or thinking about content.
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up delay-300">
+        <div className="flex flex-col items-center justify-center gap-4 opacity-0 animate-fade-in-up delay-300">
           <Button 
             showArrow 
             className="h-12 px-8 text-base bg-white text-black hover:bg-gray-200 hover:scale-105 transition-transform duration-200"
@@ -180,20 +180,11 @@ export const Hero: React.FC = () => {
             data-cal-link="hari-prasad/foundervoice"
             data-cal-config='{"layout":"month_view"}'
           >
-             Book Your Strategy Call
+             Start a 30-Day Pilot
           </Button>
-          <Button 
-            variant="outline" 
-            className="h-12 px-8 text-base hover:scale-105 transition-transform duration-200"
-            onClick={() => {
-              const element = document.getElementById('methodology');
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-          >
-            View Methodology
-          </Button>
+          <p className="text-sm text-gray-400 font-light">
+            Strategy call required before starting
+          </p>
         </div>
 
 

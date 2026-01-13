@@ -10,8 +10,8 @@ export const Services: React.FC = () => {
       <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="mb-20 relative z-10">
-        <span className="text-primary font-mono text-xs tracking-widest uppercase mb-4 block">Our Methodology</span>
-        <h2 className="text-3xl md:text-5xl font-semibold text-white">Precision-engineered <br/> personal branding.</h2>
+        <span className="text-primary font-mono text-xs tracking-widest uppercase mb-4 block">The Solution</span>
+        <h2 className="text-3xl md:text-5xl font-semibold text-white">FounderVoice <br/> A distribution system, not a content service.</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto relative z-10">
@@ -25,10 +25,12 @@ export const Services: React.FC = () => {
               <div className="w-12 h-12 rounded-full bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-white">
                 <Mic2 size={20} />
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-4">We capture your voice. <br/>Perfectly.</h3>
-              <p className="text-gray-400 max-w-md">
-                No generic AI content. No cliché business speak. We interview you, extract your insights, and turn them into compelling narratives. 
-                You spend 1 hour a week talking. We handle the rest.
+              <h3 className="text-2xl font-semibold text-white mb-4">You don't brainstorm. <br/>You don't write. You don't show up.</h3>
+              <p className="text-gray-400 max-w-md mb-4">
+                You approve or ignore. That's it.
+              </p>
+              <p className="text-gray-500 text-sm max-w-md">
+                This is not a personal branding play. This is a reputation and credibility engine. We turn what you already do into public signals that make sales, hiring, and partnerships easier.
               </p>
             </div>
             
@@ -55,10 +57,15 @@ export const Services: React.FC = () => {
               <div className="w-12 h-12 rounded-full bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-white">
                 <BarChart2 size={20} />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Data-Led Strategy</h3>
-              <p className="text-gray-400 text-sm">
-                We analyze what resonates with your specific market (DevOps, Fintech, AI) and double down.
+              <h3 className="text-xl font-semibold text-white mb-2">What We Actually Do</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Task-level clarity:
               </p>
+              <ul className="text-gray-500 text-sm space-y-2">
+                <li>• We turn your work into carefully positioned LinkedIn posts</li>
+                <li>• We extract insights from your real work</li>
+                <li>• We position you carefully and safely</li>
+              </ul>
            </div>
 
            {/* Graph Visual */}
@@ -69,7 +76,7 @@ export const Services: React.FC = () => {
 
               {/* Floating Data Tag */}
               <div className="absolute top-4 right-4 bg-primary/20 border border-primary/20 text-primary text-[10px] font-mono px-2 py-1 rounded full backdrop-blur-sm animate-pulse">
-                 +245% GROWTH
+                 DISTRIBUTION
               </div>
 
               {/* SVG Chart */}
@@ -116,8 +123,8 @@ export const Services: React.FC = () => {
               <span className="text-xs font-mono text-gray-600">01</span>
            </div>
            <div className="relative z-10">
-             <h4 className="text-lg font-medium text-white mb-1">Deal Flow</h4>
-             <p className="text-sm text-gray-500">Stay top of mind.</p>
+             <h4 className="text-lg font-medium text-white mb-1">Warmer Inbound</h4>
+             <p className="text-sm text-gray-500">Conversations start with context.</p>
            </div>
         </div>
 
@@ -129,8 +136,8 @@ export const Services: React.FC = () => {
               <span className="text-xs font-mono text-gray-600">02</span>
            </div>
            <div className="relative z-10">
-             <h4 className="text-lg font-medium text-white mb-1">Network</h4>
-             <p className="text-sm text-gray-500">Attract talent & partners.</p>
+             <h4 className="text-lg font-medium text-white mb-1">Faster Sales</h4>
+             <p className="text-sm text-gray-500">Shorter cycles, less friction.</p>
            </div>
         </div>
 
