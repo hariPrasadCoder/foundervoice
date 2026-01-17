@@ -1,10 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Section } from './ui/Section';
 import { Button } from './ui/Button';
 import { Check, ShieldCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [isUK, setIsUK] = useState(false);
+
+  useEffect(() => {
+    // Detect UK location based on IP geolocation (works with VPN)
+    const detectLocation = async () => {
+      try {
+        // Use IP-based geolocation API to detect actual country
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        
+        // Check if country code is UK (GB)
+        const isUKCountry = data.country_code === 'GB';
+        setIsUK(isUKCountry);
+      } catch (error) {
+        // Fallback to timezone/locale if API fails
+        console.error('Failed to detect location:', error);
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const isUKTimezone = timezone === 'Europe/London' || timezone === 'Europe/Guernsey' || timezone === 'Europe/Jersey' || timezone === 'Europe/Isle_of_Man';
+        
+        const locale = navigator.language || (navigator as any).userLanguage;
+        const isUKLocale = locale?.toLowerCase().includes('gb') || locale?.toLowerCase().includes('uk');
+        
+        setIsUK(isUKTimezone || isUKLocale);
+      }
+    };
+    
+    detectLocation();
+  }, []);
 
   return (
     <footer className="bg-background pt-20 pb-10 border-t border-white/5 relative">
@@ -27,7 +55,7 @@ export const Footer: React.FC = () => {
                <div className="mb-8">
                   <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">30-Day Pilot</div>
                   <div className="text-5xl font-bold mb-2">
-                     $4k
+                     {isUK ? '£4,000' : '$4,000'}
                      <span className="text-lg text-black/40 font-medium"></span>
                   </div>
                   <p className="text-black/60 font-medium mb-3">
