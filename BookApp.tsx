@@ -519,7 +519,10 @@ const Notify: React.FC = () => {
     setErrorMsg('');
 
     try {
-      const response = await fetch('/api/subscribe', {
+      // Use Cloudflare Worker endpoint (update this URL after deploying the worker)
+      const API_URL = import.meta.env.VITE_SIGNUP_API_URL || '/api/subscribe';
+      
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
