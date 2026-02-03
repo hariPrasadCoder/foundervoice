@@ -58,9 +58,9 @@ export const Navbar: React.FC = () => {
             <Button 
               variant="primary" 
               className="!px-5 !py-2 !text-xs !h-9 whitespace-nowrap"
-              data-cal-namespace="foundervoice"
-              data-cal-link="hari-prasad/foundervoice"
-              data-cal-config='{"layout":"month_view"}'
+              data-cal-namespace="strategy-call"
+              data-cal-link="foundervoice/strategy-call"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
             >
               Book a Strategy Call
             </Button>
@@ -97,9 +97,9 @@ export const Navbar: React.FC = () => {
               variant="primary" 
               className="max-w-xs"
               onClick={() => setIsMobileMenuOpen(false)}
-              data-cal-namespace="foundervoice"
-              data-cal-link="hari-prasad/foundervoice"
-              data-cal-config='{"layout":"month_view"}'
+              data-cal-namespace="strategy-call"
+              data-cal-link="foundervoice/strategy-call"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
             >
               Book a Strategy Call
             </Button>
