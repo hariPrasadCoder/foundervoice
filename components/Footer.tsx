@@ -41,33 +41,32 @@ export const Footer: React.FC = () => {
       <Section id="pricing" className="!py-0 mb-32">
          <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">Engagement Model</h2>
-            <p className="text-secondary text-lg">30-day pilot. Limited founders. High-touch, premium.</p>
-            <p className="text-gray-600 text-sm mt-4">This is not a low-cost SaaS.</p>
+            <p className="text-secondary text-lg">3-month contract. Limited founders. High-touch, premium.</p>
          </div>
 
          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Card 1 (Highlighted - 30-Day Pilot) */}
+            {/* Card 1 (Highlighted - 3-Month Contract) */}
             <div className="bg-white text-black rounded-3xl p-8 md:p-10 relative flex flex-col order-1 md:order-none hover:scale-[1.01] transition-transform duration-300">
                <div className="absolute top-8 right-8 px-3 py-1 bg-black/5 text-black text-[10px] font-bold tracking-widest uppercase rounded-full">
                   Start Here
                </div>
                
                <div className="mb-8">
-                  <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">30-Day Pilot</div>
+                  <div className="text-sm font-bold text-black/60 tracking-wider uppercase mb-2">3-Month Contract</div>
                   <div className="text-5xl font-bold mb-2">
                      {isUK ? '£4,000' : '$4,000'}
-                     <span className="text-lg text-black/40 font-medium"></span>
+                     <span className="text-lg text-black/40 font-medium">/month</span>
                   </div>
                   <p className="text-black/60 font-medium mb-3">
                      Limited capacity. Premium engagement.
                   </p>
                   <p className="text-black/80 text-sm leading-relaxed">
-                     The 30-day pilot is a paid engagement to ensure focus, priority, and real execution. This is not a free trial.
+                     A 3-month commitment ensures focus, priority, and real execution. Time to build momentum and see results.
                   </p>
                </div>
                
                <div className="space-y-4 mb-10 flex-1">
-                  {['Strategy call to align', '30-day pilot period', 'High-touch execution', 'Outcome-focused approach'].map(i => (
+                  {['Strategy call to align', '3-month engagement', 'High-touch execution', 'Outcome-focused approach', '24/7 support'].map(i => (
                      <div key={i} className="flex gap-3 text-sm font-medium">
                         <Check size={18} className="text-black shrink-0"/>
                         {i}
@@ -80,7 +79,7 @@ export const Footer: React.FC = () => {
                  data-cal-link="hari-prasad/foundervoice"
                  data-cal-config='{"layout":"month_view"}'
                >
-                 Start a 30-Day Pilot
+                 Book a Strategy Call
                </Button>
             </div>
 
@@ -89,9 +88,9 @@ export const Footer: React.FC = () => {
                <div className="mb-8">
                   <div className="text-sm font-bold text-gray-500 tracking-wider uppercase mb-2">Ongoing Engagement</div>
                   <div className="text-5xl font-bold text-white mb-2">Custom</div>
-                  <p className="text-gray-500 mb-3">After successful pilot.</p>
+                  <p className="text-gray-500 mb-3">After initial contract.</p>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                     Continuation happens only after a successful pilot. Ongoing engagement is monthly and premium.
+                     Continuation happens only after the initial 3-month engagement. Ongoing engagement is monthly and premium.
                   </p>
                </div>
 
@@ -127,7 +126,7 @@ export const Footer: React.FC = () => {
                data-cal-link="hari-prasad/foundervoice"
                data-cal-config='{"layout":"month_view"}'
             >
-               Start a 30-Day Pilot
+               Book a Strategy Call
             </Button>
          </div>
       </Section>

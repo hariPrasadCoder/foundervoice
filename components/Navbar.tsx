@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
               data-cal-link="hari-prasad/foundervoice"
               data-cal-config='{"layout":"month_view"}'
             >
-              Start a 30-Day Pilot
+              Book a Strategy Call
             </Button>
           </div>
 
@@ -101,7 +101,7 @@ export const Navbar: React.FC = () => {
               data-cal-link="hari-prasad/foundervoice"
               data-cal-config='{"layout":"month_view"}'
             >
-              Start a 30-Day Pilot
+              Book a Strategy Call
             </Button>
           </div>
         </div>

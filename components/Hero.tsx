@@ -180,7 +180,7 @@ export const Hero: React.FC = () => {
             data-cal-link="hari-prasad/foundervoice"
             data-cal-config='{"layout":"month_view"}'
           >
-             Start a 30-Day Pilot
+             Book a Strategy Call
           </Button>
           <p className="text-sm text-gray-400 font-light">
             Strategy call required before starting
