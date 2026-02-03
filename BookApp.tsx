@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, Users, Lightbulb, Rocket, Quote, Mail, Check, Sparkles, Target, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Users, Lightbulb, Rocket, Quote, Mail, Sparkles, Target, Zap } from 'lucide-react';
 
 // ============ 3D BOOK COMPONENT ============
 
@@ -507,42 +507,6 @@ const Founders: React.FC = () => (
 // ============ NOTIFY SECTION ============
 
 const Notify: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setStatus('loading');
-    setErrorMsg('');
-
-    try {
-      // Use Cloudflare Worker endpoint (update this URL after deploying the worker)
-      const API_URL = import.meta.env.VITE_SIGNUP_API_URL || '/api/subscribe';
-      
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus('success');
-        setEmail('');
-      } else {
-        setStatus('error');
-        setErrorMsg(data.error || 'Something went wrong');
-      }
-    } catch (err) {
-      setStatus('error');
-      setErrorMsg('Failed to connect. Please try again.');
-    }
-  };
-
   return (
     <Section id="notify" className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
@@ -561,31 +525,23 @@ const Notify: React.FC = () => {
           Be the first to get the book — plus exclusive founder interviews and behind-the-scenes content.
         </p>
 
-        {status === 'success' ? (
-          <div className="inline-flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-full px-6 py-4 text-primary">
-            <Check className="w-5 h-5" />
-            <span>You're on the list. We'll be in touch.</span>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={status === 'loading'}
-              className="flex-1 px-6 py-4 bg-surface border border-white/10 rounded-full text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
-            />
-            <Button type="submit" className="!px-8 !py-4 whitespace-nowrap">
-              {status === 'loading' ? 'Saving...' : 'Notify Me'}
-            </Button>
-          </form>
-        )}
-        
-        {status === 'error' && (
-          <p className="text-red-400 text-sm mt-4">{errorMsg}</p>
-        )}
+        {/* Tally Form Embed */}
+        <div className="max-w-md mx-auto">
+          <iframe
+            src="https://tally.so/embed/jaPg7a?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+            width="100%"
+            height="150"
+            frameBorder="0"
+            marginHeight={0}
+            marginWidth={0}
+            title="Book Signup"
+            className="rounded-xl"
+            style={{ 
+              background: 'transparent',
+              colorScheme: 'dark'
+            }}
+          />
+        </div>
 
         <p className="text-xs text-gray-600 mt-6">
           No spam. Just book updates and founder stories.
