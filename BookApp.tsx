@@ -1,6 +1,137 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, BookOpen, Users, Lightbulb, Rocket, Quote, Mail, Check, Sparkles, Target, Zap } from 'lucide-react';
 
+// ============ 3D BOOK COMPONENT ============
+
+const Book3D: React.FC = () => {
+  const bookRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!bookRef.current) return;
+      const rect = bookRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const rotateY = ((e.clientX - centerX) / window.innerWidth) * 20;
+      const rotateX = ((centerY - e.clientY) / window.innerHeight) * 10;
+      bookRef.current.style.transform = `perspective(1000px) rotateY(${rotateY - 15}deg) rotateX(${rotateX}deg)`;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <div className="relative w-[280px] h-[380px] md:w-[320px] md:h-[440px]" style={{ perspective: '1000px' }}>
+      {/* Glow effect behind book */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/40 via-orange-500/30 to-primary/40 blur-[60px] opacity-60 animate-pulse-glow" />
+      
+      {/* 3D Book Container */}
+      <div 
+        ref={bookRef}
+        className="relative w-full h-full transition-transform duration-200 ease-out"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          transform: 'perspective(1000px) rotateY(-15deg) rotateX(0deg)'
+        }}
+      >
+        {/* Book Cover (Front) */}
+        <div 
+          className="absolute inset-0 rounded-r-lg rounded-l-sm overflow-hidden"
+          style={{ 
+            transformStyle: 'preserve-3d',
+            transform: 'translateZ(15px)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 51, 0, 0.15)'
+          }}
+        >
+          {/* Cover Design */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#000000] border border-white/10">
+            {/* Subtle texture */}
+            <div className="absolute inset-0 opacity-30" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+            }} />
+            
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-orange-500 to-primary" />
+            
+            {/* Content */}
+            <div className="relative h-full flex flex-col justify-between p-6 md:p-8">
+              {/* Top section */}
+              <div>
+                <div className="text-[10px] md:text-xs font-mono text-primary/80 tracking-[0.3em] uppercase mb-4">
+                  FounderVoice
+                </div>
+              </div>
+              
+              {/* Center - Title */}
+              <div className="flex-1 flex flex-col justify-center">
+                <div className="text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-primary via-orange-400 to-orange-600 leading-none mb-3">
+                  50
+                </div>
+                <h2 className="text-xl md:text-2xl font-semibold text-white leading-tight mb-2">
+                  AI Founders
+                </h2>
+                <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                  The Playbook for Building<br />Products That Win
+                </p>
+              </div>
+              
+              {/* Bottom section */}
+              <div className="flex items-end justify-between">
+                <div className="text-[10px] md:text-xs text-gray-500">
+                  Hari Prasad
+                </div>
+                <div className="flex gap-1">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="w-1 h-6 md:h-8 bg-gradient-to-t from-primary/60 to-transparent rounded-full" 
+                      style={{ animationDelay: `${i * 200}ms` }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Book Spine */}
+        <div 
+          className="absolute top-0 left-0 w-[30px] h-full bg-gradient-to-r from-[#1a1a1a] to-[#0a0a0a] rounded-l-sm"
+          style={{ 
+            transform: 'rotateY(-90deg) translateX(-15px)',
+            transformOrigin: 'left'
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary to-orange-500" />
+          <div className="h-full flex items-center justify-center">
+            <span className="text-[8px] font-mono text-gray-500 tracking-widest rotate-180" style={{ writingMode: 'vertical-rl' }}>
+              50 AI FOUNDERS
+            </span>
+          </div>
+        </div>
+
+        {/* Book Pages (Side) */}
+        <div 
+          className="absolute top-[3px] right-0 w-[25px] h-[calc(100%-6px)] rounded-r-sm overflow-hidden"
+          style={{ 
+            transform: 'rotateY(90deg) translateX(12px)',
+            transformOrigin: 'right',
+            background: 'linear-gradient(to right, #f5f5f5 0%, #e8e8e8 10%, #f0f0f0 50%, #e5e5e5 100%)'
+          }}
+        >
+          {/* Page lines */}
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className="w-full h-[1px] bg-gray-300/50" style={{ marginTop: `${4 + i * 5}%` }} />
+          ))}
+        </div>
+
+        {/* Book Back Cover */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] to-[#000000] rounded-r-lg rounded-l-sm border border-white/5"
+          style={{ transform: 'translateZ(-15px)' }}
+        />
+      </div>
+    </div>
+  );
+};
+
 // ============ UI COMPONENTS ============
 
 const Button: React.FC<{
@@ -160,55 +291,65 @@ const Hero: React.FC = () => {
 
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]" />
 
-      <Section className="pt-40 md:pt-48 pb-20 text-center z-20">
-        
-        {/* Badge */}
-        <div className="inline-flex items-center justify-center p-[1px] mb-8 overflow-hidden rounded-full relative group cursor-default opacity-0 animate-fade-in-up">
-          <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#222_0%,#FF3300_50%,#222_100%)] opacity-50" />
-          <div className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-4 py-1.5 text-xs font-mono text-gray-300 backdrop-blur-3xl border border-white/5">
-            <BookOpen className="w-3.5 h-3.5 mr-2 text-primary" />
-            Coming 2026
-          </div>
-        </div>
-
-        {/* Title */}
-        <div className="relative mb-8 max-w-5xl mx-auto">
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-white leading-[1.1] md:leading-[1.05] opacity-0 animate-fade-in-up delay-100">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-primary">50</span> AI Founders.
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500">
-              50 Lessons That Won.
-            </span>
-          </h1>
-        </div>
-
-        {/* Subtitle */}
-        <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up delay-200">
-          The playbook for building AI products that actually work — straight from the founders who did it. Real stories. Real strategies. No theory.
-        </p>
-
-        {/* CTA */}
-        <div className="flex flex-col items-center justify-center gap-4 opacity-0 animate-fade-in-up delay-300">
-          <Button showArrow className="h-12 px-8 text-base" onClick={() => document.getElementById('notify')?.scrollIntoView({ behavior: 'smooth' })}>
-            Get Early Access
-          </Button>
-          <p className="text-sm text-gray-500">
-            Be first to know when it drops
-          </p>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-20 grid grid-cols-3 gap-8 max-w-2xl mx-auto opacity-0 animate-fade-in-up delay-500">
-          {[
-            { value: '50+', label: 'Founders Interviewed' },
-            { value: '$2B+', label: 'Combined Valuation' },
-            { value: '100+', label: 'Strategies Revealed' },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.value}</div>
-              <div className="text-xs md:text-sm text-gray-500">{stat.label}</div>
+      <Section className="pt-32 md:pt-40 pb-20 z-20">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          
+          {/* Left side - Content */}
+          <div className="text-center lg:text-left order-2 lg:order-1">
+            {/* Badge */}
+            <div className="inline-flex items-center justify-center p-[1px] mb-8 overflow-hidden rounded-full relative group cursor-default opacity-0 animate-fade-in-up">
+              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#222_0%,#FF3300_50%,#222_100%)] opacity-50" />
+              <div className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-4 py-1.5 text-xs font-mono text-gray-300 backdrop-blur-3xl border border-white/5">
+                <BookOpen className="w-3.5 h-3.5 mr-2 text-primary" />
+                Coming 2026
+              </div>
             </div>
-          ))}
+
+            {/* Title */}
+            <div className="relative mb-8">
+              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tighter text-white leading-[1.1] opacity-0 animate-fade-in-up delay-100">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-primary">50</span> AI Founders.
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500">
+                  50 Lessons That Won.
+                </span>
+              </h1>
+            </div>
+
+            {/* Subtitle */}
+            <p className="text-lg md:text-xl text-secondary max-w-xl mx-auto lg:mx-0 mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up delay-200">
+              The playbook for building AI products that actually work — straight from the founders who did it. Real stories. Real strategies. No theory.
+            </p>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 opacity-0 animate-fade-in-up delay-300">
+              <Button showArrow className="h-12 px-8 text-base" onClick={() => document.getElementById('notify')?.scrollIntoView({ behavior: 'smooth' })}>
+                Get Early Access
+              </Button>
+              <p className="text-sm text-gray-500 self-center">
+                Be first to know when it drops
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-12 grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0 opacity-0 animate-fade-in-up delay-500">
+              {[
+                { value: '50+', label: 'Founders' },
+                { value: '$2B+', label: 'Valuation' },
+                { value: '100+', label: 'Strategies' },
+              ].map((stat, i) => (
+                <div key={i} className="text-center lg:text-left">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs text-gray-500">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right side - 3D Book */}
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2 opacity-0 animate-fade-in-up delay-200">
+            <Book3D />
+          </div>
         </div>
       </Section>
     </div>
