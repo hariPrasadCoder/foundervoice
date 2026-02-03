@@ -507,6 +507,27 @@ const Founders: React.FC = () => (
 // ============ NOTIFY SECTION ============
 
 const Notify: React.FC = () => {
+  useEffect(() => {
+    // Load Tally embed script
+    const script = document.createElement('script');
+    script.src = 'https://tally.so/widgets/embed.js';
+    script.onload = () => {
+      if (typeof (window as any).Tally !== 'undefined') {
+        (window as any).Tally.loadEmbeds();
+      } else {
+        document.querySelectorAll('iframe[data-tally-src]:not([src])').forEach((el: any) => {
+          el.src = el.dataset.tallySrc;
+        });
+      }
+    };
+    script.onerror = script.onload;
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
+
   return (
     <Section id="notify" className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
@@ -528,18 +549,14 @@ const Notify: React.FC = () => {
         {/* Tally Form Embed */}
         <div className="max-w-md mx-auto">
           <iframe
-            src="https://tally.so/embed/jaPg7a?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+            data-tally-src="https://tally.so/embed/jaPg7a?hideTitle=1&dynamicHeight=1"
+            loading="lazy"
             width="100%"
-            height="150"
+            height="177"
             frameBorder="0"
             marginHeight={0}
             marginWidth={0}
-            title="Book Signup"
-            className="rounded-xl"
-            style={{ 
-              background: 'transparent',
-              colorScheme: 'dark'
-            }}
+            title="Get Notified"
           />
         </div>
 
