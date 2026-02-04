@@ -176,8 +176,8 @@ export const Hero: React.FC = () => {
           <Button 
             showArrow 
             className="h-12 px-8 text-base bg-white text-black hover:bg-gray-200 hover:scale-105 transition-transform duration-200"
-            data-cal-namespace="strategy-call"
-            data-cal-link="foundervoice/strategy-call"
+            data-cal-namespace="foundervoice"
+            data-cal-link="hari-prasad/foundervoice"
             data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
           >
              Book a Strategy Call

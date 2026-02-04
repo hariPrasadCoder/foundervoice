@@ -13,7 +13,7 @@ import { Footer } from './components/Footer';
 function App() {
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ namespace: "strategy-call", origin: "https://app.cal.com" });
+      const cal = await getCalApi({ namespace: "foundervoice", origin: "https://app.cal.com" });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
     })();
   }, []);
