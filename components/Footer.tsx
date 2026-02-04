@@ -144,7 +144,7 @@ export const Footer: React.FC = () => {
          </div>
 
          <div className="text-xs text-gray-600">
-             © 2025 FounderVoice Inc.
+             © 2026 FounderVoice Inc.
          </div>
       </div>
     </footer>
