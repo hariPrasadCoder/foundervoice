@@ -75,8 +75,8 @@ export const Footer: React.FC = () => {
                </div>
                <Button 
                  className="w-full !bg-black !text-white hover:!bg-black/80 shadow-none border-none h-14 rounded-xl"
-                 data-cal-namespace="strategy-call"
-                 data-cal-link="foundervoice/strategy-call"
+                 data-cal-namespace="foundervoice"
+                 data-cal-link="hari-prasad/foundervoice"
                  data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                >
                  Book a Strategy Call
@@ -103,8 +103,8 @@ export const Footer: React.FC = () => {
                <Button 
                  variant="outline" 
                  className="w-full h-14 rounded-xl"
-                 data-cal-namespace="strategy-call"
-                 data-cal-link="foundervoice/strategy-call"
+                 data-cal-namespace="foundervoice"
+                 data-cal-link="hari-prasad/foundervoice"
                  data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                >
                  Book Strategy Call
@@ -122,8 +122,8 @@ export const Footer: React.FC = () => {
             </h2>
             <Button 
                className="!text-xl !px-12 !py-6 !h-auto !rounded-full !bg-gradient-to-r !from-white !to-gray-200 !text-black hover:!from-gray-100 hover:!to-gray-300 !shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:!shadow-[0_0_60px_rgba(255,255,255,0.4)] !scale-110 hover:!scale-115 transition-all duration-300"
-               data-cal-namespace="strategy-call"
-               data-cal-link="foundervoice/strategy-call"
+               data-cal-namespace="foundervoice"
+               data-cal-link="hari-prasad/foundervoice"
                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
             >
                Book a Strategy Call
