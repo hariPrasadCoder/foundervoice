@@ -15,6 +15,7 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
+    { label: 'Book', href: '/book/' },
     { label: 'How It Works', href: '#methodology' },
     { label: 'Outcomes', href: '#why-us' },
   ];

@@ -138,6 +138,7 @@ export const Footer: React.FC = () => {
          </div>
          
          <div className="flex gap-8 text-sm text-gray-500">
+            <a href="/book/" className="hover:text-white transition-colors">Book</a>
             <a href="#" className="hover:text-white transition-colors">Mission</a>
             <a href="#" className="hover:text-white transition-colors">Team</a>
             <a href="#" className="hover:text-white transition-colors">Contact</a>
