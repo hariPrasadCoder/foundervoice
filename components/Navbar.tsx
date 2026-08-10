@@ -1,109 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/Button';
+import { booking } from '../config/site';
+
+const navLinks = [
+  { label: 'How it works', href: '#how-it-works' },
+  { label: 'About Hari', href: '#about' },
+  { label: 'Pricing', href: '#pricing' },
+];
 
 export const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
-  const navLinks = [
-    { label: 'Book', href: '/book/' },
-    { label: 'How It Works', href: '#methodology' },
-    { label: 'Outcomes', href: '#why-us' },
-  ];
+  const calProps = {
+    'data-cal-namespace': booking.namespace,
+    'data-cal-link': booking.calLink,
+    'data-cal-config': JSON.stringify(booking.config),
+  };
 
   return (
     <>
-      <nav className="fixed top-4 md:top-6 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none max-w-full">
-        <div className={`
-          pointer-events-auto
-          flex items-center justify-between 
-          transition-all duration-500 ease-out
-          w-full
-          ${isScrolled 
-            ? 'max-w-[calc(100%-2rem)] md:max-w-[600px] bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 py-2.5 px-4 rounded-full' 
-            : 'max-w-7xl py-3 md:py-4 px-4 md:px-6 bg-transparent border-transparent'
-          }
-        `}>
-          
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group relative z-10 flex-shrink-0">
-            <span className="text-base md:text-lg font-semibold tracking-tight text-white transition-opacity">
-              FounderVoice
-            </span>
+      <header className="fixed top-4 md:top-5 inset-x-0 z-50 px-4">
+        <nav className="mx-auto max-w-5xl h-16 flex items-center justify-between bg-white rounded-full shadow-[0_2px_24px_rgba(11,11,12,0.08)] px-5 md:px-3 md:pl-6">
+          <a href="/" className="flex flex-col leading-tight shrink-0">
+            <span className="font-display text-base font-extrabold text-ink tracking-tight">FounderVoice</span>
+            <span className="text-[10px] text-ink-faint font-mono tracking-wide -mt-0.5">by Hari Prasad</span>
           </a>
 
-          {/* Desktop Nav Links (Center) */}
-          <div className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => (
-              <a 
-                key={link.label} 
+              <a
+                key={link.label}
                 href={link.href}
-                className="px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors font-medium whitespace-nowrap"
+                className="text-sm font-medium text-ink-soft hover:text-ink transition-colors"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Actions */}
-          <div className="hidden md:flex items-center gap-3 ml-auto">
-            <Button 
-              variant="primary" 
-              className="!px-5 !py-2 !text-xs !h-9 whitespace-nowrap"
-              data-cal-namespace="foundervoice"
-              data-cal-link="hari-prasad/foundervoice"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-            >
-              Book a Strategy Call
+          <div className="hidden md:block">
+            <Button variant="primary" className="!px-5 !py-2.5 !text-sm" {...calProps}>
+              Book a free call
             </Button>
           </div>
 
-          {/* Mobile Toggle */}
-          <button 
-            className="md:hidden text-white p-2 pointer-events-auto flex-shrink-0 -mr-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle mobile menu"
+          <button
+            className="md:hidden text-ink p-2 -mr-2"
+            onClick={() => setIsMobileMenuOpen((v) => !v)}
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-xl pt-24 px-4 md:hidden overflow-y-auto">
-          <div className="flex flex-col gap-6 items-center text-center min-h-full justify-center pb-20">
+        <div className="fixed inset-0 z-40 bg-white pt-28 px-6 md:hidden overflow-y-auto">
+          <div className="flex flex-col gap-2">
             {navLinks.map((link) => (
-              <a 
-                key={link.label} 
+              <a
+                key={link.label}
                 href={link.href}
-                className="text-2xl sm:text-3xl font-medium text-gray-300 hover:text-white transition-colors"
+                className="text-2xl font-display font-bold text-ink py-4 border-b border-line"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <div className="w-full max-w-xs h-px bg-white/10 my-4" />
-            <Button 
-              fullWidth 
-              variant="primary" 
-              className="max-w-xs"
-              onClick={() => setIsMobileMenuOpen(false)}
-              data-cal-namespace="foundervoice"
-              data-cal-link="hari-prasad/foundervoice"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-            >
-              Book a Strategy Call
-            </Button>
+            <div className="pt-8">
+              <Button fullWidth variant="primary" onClick={() => setIsMobileMenuOpen(false)} {...calProps}>
+                Book a free call
+              </Button>
+            </div>
           </div>
         </div>
       )}

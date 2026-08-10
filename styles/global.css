@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/*
+  FounderVoice — design tokens
+  Bold, confident, LinkedIn-blue. Full-bleed color blocks, big grotesk type,
+  black pill buttons, mono micro-labels. Motion narrates the process, not decoration.
+*/
+@theme {
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Space Grotesk", "Inter", sans-serif;
+
+  --color-bg: #ffffff;
+  --color-bg-soft: #f3f5f8;      /* alternating neutral section */
+  --color-ink: #0b0b0c;          /* near-black, headlines + pill buttons */
+  --color-ink-soft: #4b5157;     /* body copy */
+  --color-ink-faint: #6b7178;    /* captions, meta */
+  --color-line: #e3e6ea;         /* hairline dividers on white */
+
+  --color-blue: #0a66c2;         /* LinkedIn blue — the one loud color */
+  --color-blue-dark: #084e96;    /* hover / deeper */
+  --color-blue-tint: #eaf2fc;    /* light card bg on white sections */
+  --color-blue-tint-line: #d3e4f7;
+  --color-blue-ink: #06305c;     /* deep blue for text-on-tint */
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-draw: draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pop-in: pop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-marquee: marquee 28s linear infinite;
+
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: var(--dash-length, 1000); }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, -3deg)); }
+  50% { transform: translateY(-10px) rotate(var(--tilt, -3deg)); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 4 duplicated copies in the track, so this loops after 1/4 of the total width (-25%), not -50%. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-25%); }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Kept at the root, not on a wrapping div, so it doesn't break
+       position: sticky for descendants (e.g. the pinned Hero). */
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-blue);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Scroll-reveal: JS toggles .is-visible via IntersectionObserver (hooks/useInView) */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease-editorial), transform 0.6s var(--ease-editorial);
+}
+@utility reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@utility delay-1 { transition-delay: 90ms; }
+@utility delay-2 { transition-delay: 180ms; }
+@utility delay-3 { transition-delay: 270ms; }
+@utility delay-4 { transition-delay: 360ms; }
+
+/* Mouse-tilt floating card (hero proof elements) */
+@utility tilt-float {
+  animation: var(--animate-float);
+  will-change: transform;
+}
+
+/* Mount pop for lazy-loaded embeds */
+@utility pop-in {
+  animation: var(--animate-pop-in);
+}
+
+/* Infinite horizontal marquee band. Content must be duplicated once (x2) for a seamless loop. */
+@utility marquee-track {
+  animation: var(--animate-marquee);
+  will-change: transform;
+}
+
+/* SVG path draw-on (connecting lines, arrows) */
+@utility path-draw {
+  stroke-dasharray: var(--dash-length, 1000);
+  stroke-dashoffset: var(--dash-length, 1000);
+}
+@utility path-draw-visible {
+  animation: var(--animate-draw);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Everything gets flattened except the ticker: a gentle, linear text
+     scroll isn't the disorienting kind of motion this preference targets
+     (the actual scroll-jacking hero effect is separately disabled via JS),
+     and freezing it via the !important duration/iteration overrides just
+     leaves it stuck on frame one instead of looping. */
+  *:not(.marquee-track), *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .path-draw {
+    stroke-dashoffset: 0;
+  }
+}

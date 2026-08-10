@@ -1,20 +1,19 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# FounderVoice
 
-# Run and deploy your AI Studio app
+The FounderVoice marketing site — a small, founder-led LinkedIn service run directly by Hari Prasad. Built with React 19, TypeScript, Vite, and Tailwind CSS v4.
 
-This contains everything you need to run your app locally.
+## Run locally
 
-View your app in AI Studio: https://ai.studio/apps/drive/1uwfXVtjnm2JfG0uJN8KQ3qD8VU7UlgBN
+**Prerequisites:** Node.js
 
-## Run Locally
+1. Install dependencies: `npm install`
+2. Run the app: `npm run dev`
+3. Build for production: `npm run build`
 
-**Prerequisites:**  Node.js
+## Structure
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- `config/site.ts` — single source of truth for metrics, pricing, capacity and links. Update values here, not in components.
+- `components/` — page sections, composed in `App.tsx`.
+- `components/ui/` — shared primitives (`Button`, `Section`).
+- `styles/global.css` — design tokens (colors, fonts, motion) via Tailwind v4's `@theme`.
+- `public/` — static assets served as-is (favicon, OG image, robots.txt, sitemap.xml).

@@ -1,194 +1,258 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './ui/Button';
-import { Section } from './ui/Section';
+import { booking, capacity, linkedinEmbeds, postUrl } from '../config/site';
+import { useScrollProgress } from '../hooks/useScrollProgress';
+
+const audience = [
+  'DTC FOUNDERS',
+  'CONSUMER APP FOUNDERS',
+  'MARKETPLACE FOUNDERS',
+  'SUBSCRIPTION FOUNDERS',
+  'BOOTSTRAPPED FOUNDERS',
+  'FUNDED FOUNDERS',
+];
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * Math.min(Math.max(t, 0), 1);
+/** Maps progress to a 0-1 value scoped to [start, end], for staging distinct beats. */
+const stage = (p: number, start: number, end: number) => Math.min(Math.max((p - start) / (end - start), 0), 1);
+/** "273,789" -> "273K". Floors, never rounds up, so a trailing "+" is always honest. */
+const shortNum = (n: string) => {
+  const v = Number(n.replace(/,/g, ''));
+  return v >= 1000 ? `${Math.floor(v / 1000)}K` : n;
+};
+/** Real, computed from the 4 posts' real impression counts. Never a made-up number. */
+const combinedImpressions = shortNum(
+  String(linkedinEmbeds.reduce((sum, p) => sum + Number(p.impressions.replace(/,/g, '')), 0))
+);
+
+// Text sits centered; cards flank it left/right so the hero reads balanced on
+// wide screens instead of everything piling up on one side. Bigger + higher
+// z-index reads as closer. On scroll, left cards part further left, right
+// cards part further right, opening outward as the section exits.
+const cardLayout = [
+  { side: 'left', top: '10%', pos: '5%', width: 220, restRotate: -6, z: 40, entranceDelay: 150, exitY: -300, exitX: -90, exitRotate: -20, exitScale: 1.1, badge: 'impressions' as const },
+  { side: 'right', top: '13%', pos: '5%', width: 188, restRotate: 8, z: 30, entranceDelay: 300, exitY: -260, exitX: 100, exitRotate: 18, exitScale: 1.05, badge: 'impressions' as const },
+  { side: 'left', top: '55%', pos: '3%', width: 158, restRotate: -11, z: 20, entranceDelay: 450, exitY: -190, exitX: -80, exitRotate: -18, exitScale: 0.9, badge: 'reached' as const },
+  { side: 'right', top: '58%', pos: '7%', width: 150, restRotate: 7, z: 10, entranceDelay: 600, exitY: -170, exitX: 85, exitRotate: 16, exitScale: 0.92, badge: 'reached' as const },
+] as const;
+
+const badgeText = (badge: 'impressions' | 'reached', post: (typeof linkedinEmbeds)[number]) =>
+  badge === 'reached'
+    ? `Reached ${shortNum(post.membersReached ?? post.impressions)}+ people`
+    : `${shortNum(post.impressions)}+ impressions`;
 
 export const Hero: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const { ref: scrollRef, progress: rawProgress } = useScrollProgress<HTMLDivElement>();
+  const [mounted, setMounted] = useState(false);
+  const [settled, setSettled] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  // The pinned scroll-through-the-hero illusion only makes sense where the
+  // floating cards exist (lg+). Below that, mobile/tablet gets a normal,
+  // content-sized hero with a static photo grid instead, so nothing's lost.
+  const [desktop, setDesktop] = useState(true);
+  const pinned = desktop && !reducedMotion;
+  const progress = pinned ? rawProgress : 0;
 
-  // Mouse Move Parallax Logic
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      
-      // Calculate normalized coordinates (-1 to 1)
-      const x = (clientX / innerWidth - 0.5) * 2;
-      const y = (clientY / innerHeight - 0.5) * 2;
-      
-      // Update CSS variables for performance
-      containerRef.current.style.setProperty('--mouse-x', x.toString());
-      containerRef.current.style.setProperty('--mouse-y', y.toString());
-      containerRef.current.style.setProperty('--cursor-x', clientX + 'px');
-      containerRef.current.style.setProperty('--cursor-y', clientY + 'px');
-    };
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setReducedMotion(reduce);
 
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const updateDesktop = () => setDesktop(mq.matches);
+    updateDesktop();
+    mq.addEventListener('change', updateDesktop);
+
+    if (reduce) {
+      setMounted(true);
+      setSettled(true);
+      return () => mq.removeEventListener('change', updateDesktop);
+    }
+    const raf = requestAnimationFrame(() => setMounted(true));
+    const settleTimer = setTimeout(() => setSettled(true), 1150);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(settleTimer);
+      mq.removeEventListener('change', updateDesktop);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!cursorRef.current) return;
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth - 0.5) * 2;
+      const y = (e.clientY / innerHeight - 0.5) * 2;
+      cursorRef.current.style.setProperty('--mx', x.toFixed(3));
+      cursorRef.current.style.setProperty('--my', y.toFixed(3));
+    };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [reducedMotion]);
 
-  // Canvas Particle Animation Logic
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  const calProps = {
+    'data-cal-namespace': booking.namespace,
+    'data-cal-link': booking.calLink,
+    'data-cal-config': JSON.stringify(booking.config),
+  };
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-    
-    // Particle configuration
-    const particles: {x: number, y: number, size: number, speedX: number, speedY: number, alpha: number}[] = [];
-    const particleCount = 60; // Keep it clean and performant
+  const transitionClass = `transition-all ${settled ? 'duration-150' : 'duration-[750ms]'} ease-editorial`;
 
-    const initParticles = () => {
-        particles.length = 0;
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                size: Math.random() * 2 + 0.5,
-                speedX: (Math.random() - 0.5) * 0.2,
-                speedY: (Math.random() - 0.5) * 0.2,
-                alpha: Math.random() * 0.5 + 0.1
-            });
-        }
-    };
-
-    const draw = () => {
-        ctx.clearRect(0, 0, width, height);
-        
-        particles.forEach(p => {
-            p.x += p.speedX;
-            p.y += p.speedY;
-
-            // Wrap around screen
-            if (p.x < 0) p.x = width;
-            if (p.x > width) p.x = 0;
-            if (p.y < 0) p.y = height;
-            if (p.y > height) p.y = 0;
-
-            ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.3})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-        });
-        
-        requestAnimationFrame(draw);
-    };
-
-    const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        initParticles();
-    };
-
-    initParticles();
-    draw();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Text: slides up + fades in on mount, then exits on scroll (staged, not a flat fade).
+  const textStyle = (entranceDelay: number, exitStart: number, exitEnd: number, exitDistance: number) => ({
+    transform: `translateY(${mounted ? lerp(0, -exitDistance, stage(progress, exitStart, exitEnd)) : 26}px)`,
+    opacity: mounted ? 1 - stage(progress, exitStart, exitEnd) : 0,
+    transitionDelay: `${entranceDelay}ms`,
+  });
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden bg-background"
-    >
-      
-      {/* 1. Animated Canvas Background (Stars/Particles) */}
-      <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />
-
-      {/* 2. Dynamic Cursor Spotlight */}
-      <div 
-        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300 opacity-50"
-        style={{
-          background: `radial-gradient(600px circle at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(255, 255, 255, 0.04), transparent 40%)`
-        }}
-      />
-
-      {/* 3. Moving Ambient Blobs (Aurora Effect) */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] pointer-events-none animate-blob opacity-40 mix-blend-screen" />
-      <div className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-blob animation-delay-2000 opacity-40 mix-blend-screen" />
-      <div className="absolute bottom-[-20%] left-[20%] w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none animate-blob animation-delay-4000 opacity-30 mix-blend-screen" />
-
-      {/* 4. Background Grid */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]" />
-      
-      {/* 5. Floating Parallax Elements (Abstract Shapes Only) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-         
-         {/* Top Right Abstract Shape: Glass Cube */}
-         <div 
-            className="absolute top-[10%] right-[10%] w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/5 backdrop-blur-sm hidden lg:block animate-spin-reverse-slow opacity-60"
-             style={{ 
-              transform: 'translate(calc(var(--mouse-x) * 15px), calc(var(--mouse-y) * -15px)) rotate(45deg)',
-              transition: 'transform 0.2s ease-out'
+    // Extra scroll distance drives the pinned exit animation, desktop only.
+    <div ref={scrollRef} className={`relative ${pinned ? 'h-[240vh]' : ''}`}>
+      <div className={pinned ? 'sticky top-0 h-screen overflow-hidden' : 'relative overflow-hidden'}>
+        <div ref={cursorRef} className={`relative w-full ${pinned ? 'h-full' : ''} bg-blue overflow-hidden`}>
+          <div
+            className="absolute inset-0 opacity-[0.08] pointer-events-none"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)',
+              backgroundSize: '48px 48px',
             }}
-         />
+          />
 
-          {/* Bottom Left Abstract Shape: Circle */}
-         <div 
-            className="absolute bottom-[10%] left-[10%] w-32 h-32 rounded-full border border-dashed border-white/10 hidden lg:block animate-spin-slow opacity-40"
-             style={{ 
-              transform: 'translate(calc(var(--mouse-x) * -25px), calc(var(--mouse-y) * 25px))',
-              transition: 'transform 0.2s ease-out'
-            }}
-         />
-      </div>
+          {/* 4 real posts flanking the centered text: bigger/higher z-index reads as closer. */}
+          {cardLayout.map((c, i) => {
+            const post = linkedinEmbeds[i];
+            if (!post) return null;
+            const exitP = stage(progress, 0, 0.85);
+            const rotate = lerp(c.restRotate, c.restRotate + c.exitRotate, exitP);
+            const scale = lerp(mounted ? 1 : 0.8, c.exitScale, i === 0 || i === 1 ? stage(progress, 0, 0.6) : 0);
+            const entranceY = mounted ? 0 : 70;
+            const entranceRotate = mounted ? 0 : 18 * (i % 2 === 0 ? 1 : -1);
+            const translateY = lerp(0, c.exitY, exitP) + entranceY;
+            const translateX = lerp(0, c.exitX, exitP);
+            const fadeStart = 0.42 + i * 0.04;
+            const opacity = mounted ? 1 - stage(progress, fadeStart, fadeStart + 0.35) : 0;
 
-      {/* 6. Shooting Star Effect (Subtle overlay) */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-         <div className="absolute top-[20%] left-[20%] w-[2px] h-[100px] bg-gradient-to-b from-transparent via-white to-transparent opacity-0 animate-[shimmer_3s_infinite_2s] rotate-45"></div>
-         <div className="absolute top-[10%] right-[30%] w-[1px] h-[150px] bg-gradient-to-b from-transparent via-primary to-transparent opacity-0 animate-[shimmer_5s_infinite_0s] rotate-12"></div>
-      </div>
+            return (
+              <a
+                key={post.urn}
+                href={postUrl(post.urn)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View this real LinkedIn post from Hari Prasad"
+                className={`group hidden lg:block absolute ${transitionClass}`}
+                style={{
+                  top: c.top,
+                  [c.side]: c.pos,
+                  zIndex: c.z,
+                  transitionDelay: mounted ? '0ms' : `${c.entranceDelay}ms`,
+                  transform: `translate(calc(${translateX}px + var(--mx, 0) * ${8 + i * 3}px), calc(${translateY}px + var(--my, 0) * ${8 + i * 3}px)) rotate(${rotate + entranceRotate}deg) scale(${scale})`,
+                  opacity,
+                }}
+              >
+                <img
+                  src={post.image}
+                  alt="A real LinkedIn post from Hari Prasad"
+                  width={c.width}
+                  height={Math.round(c.width * 1.19)}
+                  style={{ width: c.width }}
+                  className="rounded-xl shadow-[0_30px_70px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:scale-[1.04] group-hover:shadow-[0_35px_80px_rgba(0,0,0,0.45)]"
+                />
+                <div className="mt-2 bg-white rounded-lg px-3 py-2 shadow-lg inline-block transition-transform duration-200 group-hover:scale-[1.04]">
+                  <p className="font-display text-sm font-extrabold text-blue">{badgeText(c.badge, post)}</p>
+                </div>
+              </a>
+            );
+          })}
 
-      <Section className="pt-40 md:pt-48 pb-20 text-center z-20 relative">
-        
-        {/* Animated Pill Badge */}
-        <div className="inline-flex items-center justify-center p-[1px] mb-8 overflow-hidden rounded-full relative group cursor-default opacity-0 animate-fade-in-up hover:scale-105 transition-transform duration-300">
-           <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#222_0%,#fff_50%,#222_100%)] opacity-30" />
-           <div className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-4 py-1.5 text-xs font-mono text-gray-300 backdrop-blur-3xl border border-white/5">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse"></span>
-              Limited Capacity
-           </div>
-        </div>
-
-        {/* Main Heading */}
-        <div className="relative mb-8 max-w-5xl mx-auto">
-           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-white leading-[1.1] md:leading-[1.05] opacity-0 animate-fade-in-up delay-100">
-             Turn Your Work Into
-             <br />
-             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-600 hover:from-primary hover:via-primary hover:to-orange-400 transition-all duration-500 cursor-default">
-               Inbound, Credibility, and Leverage
-             </span>
-           </h1>
-        </div>
-
-        {/* Subheading */}
-        <p className="text-lg md:text-xl text-secondary max-w-2xl mx-auto mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up delay-200">
-          We use LinkedIn to do it - without you posting or thinking about content.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col items-center justify-center gap-4 opacity-0 animate-fade-in-up delay-300">
-          <Button 
-            showArrow 
-            className="h-12 px-8 text-base bg-white text-black hover:bg-gray-200 hover:scale-105 transition-transform duration-200"
-            data-cal-namespace="foundervoice"
-            data-cal-link="hari-prasad/foundervoice"
-            data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+          <div
+            className={`max-w-3xl mx-auto px-6 md:px-8 flex flex-col items-center text-center relative z-20 ${
+              pinned ? 'h-full justify-center' : 'pt-40 md:pt-48 pb-14'
+            }`}
           >
-             Book a Strategy Call
-          </Button>
-          <p className="text-sm text-gray-400 font-light">
-            Strategy call required before starting
-          </p>
+            <p
+              className={`font-mono text-xs md:text-sm tracking-[0.18em] text-white/70 uppercase mb-6 ${transitionClass}`}
+              style={textStyle(0, 0.05, 0.3, 50)}
+            >
+              FounderVoice · by Hari Prasad
+            </p>
+
+            <h1
+              className={`font-display text-[2.75rem] leading-[1.05] sm:text-6xl sm:leading-[1.02] md:text-7xl md:leading-[0.98] font-black text-white mb-8 ${transitionClass}`}
+              style={textStyle(80, 0.18, 0.48, 130)}
+            >
+              An audience is the cheapest channel you'll ever own.
+            </h1>
+
+            <p
+              className={`text-lg md:text-2xl text-white/85 max-w-xl leading-snug mb-10 font-medium ${transitionClass}`}
+              style={textStyle(160, 0.28, 0.56, 95)}
+            >
+              You talk. I turn it into LinkedIn content that builds it. You approve.
+            </p>
+
+            <div className={`flex flex-col items-center gap-5 ${transitionClass}`} style={textStyle(240, 0.35, 0.6, 70)}>
+              <Button showArrow variant="primary" className="h-14 px-8 text-base" {...calProps}>
+                Book a free call
+              </Button>
+              <p className="text-sm text-white/70">
+                Free strategy call first · No commitment · {capacity.clientsLabel}
+              </p>
+            </div>
+
+            {/* Mobile/tablet: no floating cards, so the same 4 real posts show as a static grid instead. */}
+            <div className="lg:hidden grid grid-cols-2 gap-3 mt-12 w-full max-w-sm">
+              {linkedinEmbeds.map((post, i) => (
+                <a
+                  key={post.urn}
+                  href={postUrl(post.urn)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View this real LinkedIn post from Hari Prasad"
+                  className={`block rounded-lg overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.25)] reveal ${
+                    mounted ? 'reveal-visible' : ''
+                  }`}
+                  style={{ transitionDelay: `${300 + i * 100}ms` }}
+                >
+                  <img src={post.image} alt="A real LinkedIn post from Hari Prasad" className="w-full h-auto" loading="lazy" />
+                </a>
+              ))}
+            </div>
+            <p
+              className={`lg:hidden text-xs text-white/60 mt-4 reveal ${mounted ? 'reveal-visible' : ''}`}
+              style={{ transitionDelay: '750ms' }}
+            >
+              4 real posts · {combinedImpressions}+ combined impressions
+            </p>
+          </div>
+
+          {/* Ticker band: stays fully visible and running the whole time it's pinned, never fades. */}
+          <div
+            className={`${pinned ? 'absolute bottom-0 inset-x-0' : 'relative mt-14'} z-20 border-t border-white/15 bg-blue-dark overflow-hidden ${transitionClass}`}
+            style={{
+              transform: `translateY(${mounted ? 0 : 24}px)`,
+              opacity: mounted ? 1 : 0,
+              transitionDelay: '380ms',
+            }}
+          >
+            <div className="flex whitespace-nowrap py-4 marquee-track" style={{ contain: 'layout paint' }}>
+              {[0, 1, 2, 3].map((copy) => (
+                <div key={copy} className="flex items-center shrink-0" aria-hidden={copy !== 0}>
+                  {audience.map((item) => (
+                    <span key={item} className="flex items-center">
+                      <span className="font-mono text-sm md:text-base font-bold text-white/90 tracking-wide px-4">
+                        {item}
+                      </span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-
-
-      </Section>
+      </div>
     </div>
   );
 };

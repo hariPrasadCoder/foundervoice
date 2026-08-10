@@ -4,14 +4,14 @@ interface SectionProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
+  /** Narrower measure for text-heavy sections. */
+  narrow?: boolean;
 }
 
-export const Section: React.FC<SectionProps> = ({ children, className = "", id }) => {
+export const Section: React.FC<SectionProps> = ({ children, className = '', id, narrow = false }) => {
   return (
-    <section id={id} className={`py-20 md:py-32 relative overflow-hidden ${className}`}>
-      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
-        {children}
-      </div>
+    <section id={id} className={`py-20 md:py-28 relative ${className}`}>
+      <div className={`mx-auto px-6 md:px-8 ${narrow ? 'max-w-3xl' : 'max-w-6xl'}`}>{children}</div>
     </section>
   );
 };

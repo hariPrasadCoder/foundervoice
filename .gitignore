@@ -11,12 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
+*.mov
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+.playwright-mcp/
 *.suo
 *.ntvs*
 *.njsproj

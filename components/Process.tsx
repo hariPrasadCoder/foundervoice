@@ -1,66 +1,61 @@
 import React from 'react';
 import { Section } from './ui/Section';
+import { useInView } from '../hooks/useInView';
+
+const steps = [
+  { number: '01', title: 'We talk', lead: "A short conversation. That's the material." },
+  { number: '02', title: 'I extract the stories', lead: "I find what's actually worth saying." },
+  { number: '03', title: 'I write', lead: 'Real posts. No generic AI fluff.' },
+  { number: '04', title: 'You approve', lead: 'Change it, approve it, or skip it.' },
+];
+
+const Step: React.FC<{ step: (typeof steps)[number]; isLast: boolean }> = ({ step, isLast }) => {
+  const { ref, inView } = useInView<HTMLDivElement>(0.5);
+
+  return (
+    <div ref={ref} className="flex gap-6 md:gap-8">
+      <div className="flex flex-col items-center">
+        <div
+          className={`w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-mono text-sm font-bold transition-colors duration-500 ${
+            inView ? 'bg-ink text-white' : 'bg-bg-soft text-ink-faint'
+          }`}
+        >
+          {step.number}
+        </div>
+        {!isLast && (
+          <div className="w-px flex-1 min-h-16 bg-line relative overflow-hidden mt-1">
+            <div
+              className="absolute inset-x-0 top-0 bg-ink transition-transform duration-700 ease-editorial origin-top"
+              style={{ height: '100%', transform: inView ? 'scaleY(1)' : 'scaleY(0)' }}
+            />
+          </div>
+        )}
+      </div>
+      <div className={`pb-14 reveal ${inView ? 'reveal-visible' : ''}`}>
+        <h3 className="text-xl md:text-2xl font-display font-bold text-ink mb-1.5">{step.title}</h3>
+        <p className="text-ink-soft leading-relaxed">{step.lead}</p>
+      </div>
+    </div>
+  );
+};
 
 export const Process: React.FC = () => {
   return (
-    <Section id="methodology" className="bg-background">
-       <div className="grid md:grid-cols-2 gap-12 items-center">
-         <div>
-            <h2 className="text-3xl md:text-5xl font-medium text-white mb-6">How It Works</h2>
-            <p className="text-secondary mb-8">
-               Three simple steps. No complexity.
-            </p>
-            <div className="space-y-6">
-               {[
-                  { title: "01. Capture Real Signals", desc: "We extract insights from your actual work. Product decisions. Customer conversations. Technical challenges." },
-                  { title: "02. Turn Into Credible Narratives", desc: "We transform your work into public signals. No fluff. No hype. Just credible positioning." },
-                  { title: "03. Distribute Consistently", desc: "We publish without your effort. You approve or ignore. Distribution happens automatically." }
-               ].map((step, i) => (
-                  <div key={i} className="flex gap-4 group">
-                     <div className="mt-1 font-mono text-primary opacity-50 group-hover:opacity-100 transition-opacity">{step.title.split('.')[0]}</div>
-                     <div>
-                        <h3 className="text-white font-medium group-hover:text-primary transition-colors">{step.title.split('. ')[1]}</h3>
-                        <p className="text-sm text-gray-500">{step.desc}</p>
-                        {i === 0 && (
-                           <div className="mt-4 text-sm text-gray-500">
-                              <p className="font-medium text-gray-400 mb-2">Minimal input, by design</p>
-                              <p className="mb-1">Most founders spend a few minutes per week.</p>
-                              <p className="mb-1">We ask 1–2 specific questions when something happens (a launch, a decision, a hire, a win or loss).</p>
-                              <p className="mb-1">You reply in a sentence, a voice note, or not at all.</p>
-                              <p>We handle the rest.</p>
-                           </div>
-                        )}
-                     </div>
-                  </div>
-               ))}
-            </div>
-         </div>
-         <div className="relative flex justify-center items-center py-10">
-             {/* Complex Gyroscope Animation */}
-             <div className="relative w-64 h-64 flex items-center justify-center">
-                
-                {/* Outer Ring */}
-                <div className="absolute inset-0 rounded-full border border-white/5 animate-spin-slow"></div>
-                <div className="absolute inset-4 rounded-full border border-dashed border-white/10 animate-spin-reverse-slow"></div>
-                
-                {/* Middle Ring */}
-                <div className="absolute inset-12 rounded-full border border-white/10 animate-[spin_8s_linear_infinite]">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_rgba(255,51,0,0.8)]"></div>
-                </div>
+    <Section id="how-it-works" className="bg-white" narrow>
+      <div className="mb-14 max-w-xl">
+        <h2 className="font-display text-3xl md:text-5xl font-black text-ink leading-tight mb-4">
+          You talk. I handle the rest.
+        </h2>
+        <p className="text-ink-soft text-lg">
+          You're running a company. You don't have two hours a week to sit down and write.
+        </p>
+      </div>
 
-                {/* Inner Ring */}
-                <div className="absolute inset-20 rounded-full border border-primary/20 animate-[spin_4s_linear_infinite_reverse]"></div>
-
-                {/* Core */}
-                <div className="absolute w-16 h-16 rounded-full bg-primary/10 backdrop-blur-md flex items-center justify-center animate-pulse">
-                   <div className="w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_rgba(255,77,0,0.8)]"></div>
-                </div>
-
-                {/* Glow Backdrop */}
-                <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full -z-10"></div>
-             </div>
-         </div>
-       </div>
+      <div>
+        {steps.map((step, i) => (
+          <Step key={step.number} step={step} isLast={i === steps.length - 1} />
+        ))}
+      </div>
     </Section>
   );
 };
