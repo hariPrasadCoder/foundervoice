@@ -1,15 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from './ui/Button';
-import { booking, capacity, linkedinEmbeds, postUrl } from '../config/site';
+import { booking, calBookingUrl, linkedinEmbeds, postUrl } from '../config/site';
 import { useScrollProgress } from '../hooks/useScrollProgress';
 
-const audience = [
+// One ICP, six angles on it — early-stage, capital-backed consumer founders,
+// not "anyone consumer-facing." Keep this list internally consistent with
+// Positioning's "the sale, the raise or the hire" framing.
+const audienceTags = [
+  'SEED-STAGE FOUNDERS',
+  'SERIES A FOUNDERS',
   'DTC FOUNDERS',
   'CONSUMER APP FOUNDERS',
   'MARKETPLACE FOUNDERS',
   'SUBSCRIPTION FOUNDERS',
-  'BOOTSTRAPPED FOUNDERS',
-  'FUNDED FOUNDERS',
 ];
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * Math.min(Math.max(t, 0), 1);
@@ -21,9 +24,13 @@ const shortNum = (n: string) => {
   return v >= 1000 ? `${Math.floor(v / 1000)}K` : n;
 };
 /** Real, computed from the 4 posts' real impression counts. Never a made-up number. */
-const combinedImpressions = shortNum(
-  String(linkedinEmbeds.reduce((sum, p) => sum + Number(p.impressions.replace(/,/g, '')), 0))
+const combinedImpressionsTotal = linkedinEmbeds.reduce(
+  (sum, p) => sum + Number(p.impressions.replace(/,/g, '')),
+  0
 );
+const combinedImpressions = shortNum(String(combinedImpressionsTotal));
+/** Where the hero counter starts its climb — a handful short of the real total, not zero. */
+const reachClimbStart = Math.max(0, combinedImpressionsTotal - 4);
 
 // Text sits centered; cards flank it left/right so the hero reads balanced on
 // wide screens instead of everything piling up on one side. Bigger + higher
@@ -53,6 +60,49 @@ export const Hero: React.FC = () => {
   const [desktop, setDesktop] = useState(true);
   const pinned = desktop && !reducedMotion;
   const progress = pinned ? rawProgress : 0;
+
+  // The hero's centerpiece: starts a few short of the real combined-reach
+  // total (not from zero — this isn't a big countdown spectacle, just a
+  // number settling into place), climbs the rest of the way on mount, then
+  // never stops — it keeps ticking up in real, slow increments for as long
+  // as the page is open, the same way the real impression count keeps
+  // climbing on LinkedIn after a post goes out. No fixed ceiling, but paced
+  // slowly enough that it stays close to the real number for any realistic
+  // visit instead of running away into an obviously fake one.
+  const [reachCount, setReachCount] = useState(reachClimbStart);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    if (reducedMotion) {
+      setReachCount(combinedImpressionsTotal);
+      return;
+    }
+
+    const climbDuration = 1200;
+    const climbStart = performance.now();
+    let raf: number;
+    let trickle: number;
+
+    const climb = (now: number) => {
+      const progress = Math.min((now - climbStart) / climbDuration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setReachCount(Math.round(reachClimbStart + (combinedImpressionsTotal - reachClimbStart) * eased));
+      if (progress < 1) {
+        raf = requestAnimationFrame(climb);
+      } else {
+        trickle = window.setInterval(() => setReachCount((v) => v + 1), 2600);
+      }
+    };
+    raf = requestAnimationFrame(climb);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearInterval(trickle);
+    };
+  }, [mounted, reducedMotion]);
+
+  const tickerItems = audienceTags;
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -171,34 +221,53 @@ export const Hero: React.FC = () => {
               pinned ? 'h-full justify-center' : 'pt-40 md:pt-48 pb-14'
             }`}
           >
-            <p
-              className={`font-mono text-xs md:text-sm tracking-[0.18em] text-white/70 uppercase mb-6 ${transitionClass}`}
-              style={textStyle(0, 0.05, 0.3, 50)}
-            >
-              FounderVoice · by Hari Prasad
-            </p>
-
             <h1
-              className={`font-display text-[2.75rem] leading-[1.05] sm:text-6xl sm:leading-[1.02] md:text-7xl md:leading-[0.98] font-black text-white mb-8 ${transitionClass}`}
-              style={textStyle(80, 0.18, 0.48, 130)}
+              className={`font-display text-[2.5rem] leading-[1.1] sm:text-6xl sm:leading-[1.05] md:text-7xl md:leading-[1] font-black text-white mb-10 ${transitionClass}`}
+              style={textStyle(60, 0.18, 0.48, 130)}
             >
-              An audience is the cheapest channel you'll ever own.
+              I help you reach{' '}
+              <span className="relative inline-block">
+                <span className="tabular-nums">{reachCount.toLocaleString('en-GB')}</span>
+                <svg
+                  className="absolute left-0 -bottom-2 sm:-bottom-3 w-full h-3 sm:h-4"
+                  viewBox="0 0 100 12"
+                  preserveAspectRatio="none"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2,7 Q50,1 98,7"
+                    stroke="#fff"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    fill="none"
+                    className={`path-draw ${mounted ? 'path-draw-visible' : ''}`}
+                    style={{ ['--dash-length' as string]: 100, animationDelay: '900ms' }}
+                  />
+                </svg>
+              </span>{' '}
+              people on LinkedIn.
             </h1>
 
             <p
               className={`text-lg md:text-2xl text-white/85 max-w-xl leading-snug mb-10 font-medium ${transitionClass}`}
-              style={textStyle(160, 0.28, 0.56, 95)}
+              style={textStyle(200, 0.3, 0.56, 95)}
             >
-              You talk. I turn it into LinkedIn content that builds it. You approve.
+              You talk. I write the posts. You approve every word.
             </p>
 
-            <div className={`flex flex-col items-center gap-5 ${transitionClass}`} style={textStyle(240, 0.35, 0.6, 70)}>
-              <Button showArrow variant="primary" className="h-14 px-8 text-base" {...calProps}>
+            <div className={`flex flex-col items-center gap-3 ${transitionClass}`} style={textStyle(240, 0.35, 0.6, 70)}>
+              <Button
+                showArrow
+                variant="primary"
+                className="h-14 px-8 text-base"
+                href={calBookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                {...calProps}
+              >
                 Book a free call
               </Button>
-              <p className="text-sm text-white/70">
-                Free strategy call first · No commitment · {capacity.clientsLabel}
-              </p>
             </div>
 
             {/* Mobile/tablet: no floating cards, so the same 4 real posts show as a static grid instead. */}
@@ -237,14 +306,14 @@ export const Hero: React.FC = () => {
             }}
           >
             <div className="flex whitespace-nowrap py-4 marquee-track" style={{ contain: 'layout paint' }}>
-              {[0, 1, 2, 3].map((copy) => (
+              {[0, 1].map((copy) => (
                 <div key={copy} className="flex items-center shrink-0" aria-hidden={copy !== 0}>
-                  {audience.map((item) => (
-                    <span key={item} className="flex items-center">
+                  {tickerItems.map((item, i) => (
+                    <span key={`${copy}-${i}`} className="flex items-center">
                       <span className="font-mono text-sm md:text-base font-bold text-white/90 tracking-wide px-4">
                         {item}
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
                     </span>
                   ))}
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from './ui/Button';
 import { Section } from './ui/Section';
-import { booking } from '../config/site';
+import { booking, calBookingUrl } from '../config/site';
 import { useInView } from '../hooks/useInView';
 
 export const StartHere: React.FC = () => {
@@ -41,7 +41,15 @@ export const StartHere: React.FC = () => {
       </div>
 
       <div className={`reveal ${inView ? 'reveal-visible' : ''} delay-3`}>
-        <Button showArrow variant="primary" className="h-14 px-8 text-base mb-4" {...calProps}>
+        <Button
+          showArrow
+          variant="primary"
+          className="h-14 px-8 text-base mb-4"
+          href={calBookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          {...calProps}
+        >
           Book a free call
         </Button>
         <p className="text-sm text-ink-faint">30 minutes · No pitch deck · No commitment</p>

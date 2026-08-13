@@ -8,11 +8,13 @@ import hariImage from '../images/hari.jpg';
 
 const Stat: React.FC<{ m: (typeof metrics)['impressions']; start: boolean }> = ({ m, start }) => {
   const value = useCountUp(m.value, start);
+  const done = value >= m.value;
   return (
     <div>
       <div className="font-display text-2xl font-extrabold text-ink tabular-nums">
         {value.toFixed(m.decimals)}
         {m.suffix}
+        {done && '+'}
       </div>
       <div className="text-xs text-ink-faint mt-1">{m.label}</div>
     </div>
@@ -35,19 +37,20 @@ export const About: React.FC = () => {
           <div className="space-y-4 text-lg text-ink-soft leading-relaxed max-w-xl">
             <p className="text-ink font-semibold">I'm Hari Prasad.</p>
             <p>
-              I'm building MyRealProduct (Antler '26). Before that, I was part of Jotterwolf, a
-              Columbia startup competition finalist. I've been on your side of this: building
-              something people need to trust before they'll pay for it, with no marketing budget
-              to buy that trust.
+              Ivy League grad. Senior AI engineer. I think distribution is the moat, not the
+              product. I've been exactly where you are: trying to get strangers to trust something
+              new, with no budget to make that happen faster.
             </p>
             <p>
               So I built my own audience instead. It's reached millions of people and opened doors
-              across countries, without spending a pound on ads.
+              across countries, without spending a pound on ads: a TEDx talk, features in BBC and
+              Financial Express, collaborations with UNITAR, AWS and Google. None of it was
+              pitched. It found me because I kept posting.
             </p>
             <p>Most interesting people don't want to become content creators. They shouldn't have to.</p>
             <p className="text-ink font-medium">
-              FounderVoice is intentionally small. No junior ghostwriters, no account managers. I
-              work directly with every client.
+              FounderVoice stays capped at 3 clients on purpose: I take three people seriously, or
+              I take none. If you want a roster of junior writers, this isn't that.
             </p>
           </div>
 

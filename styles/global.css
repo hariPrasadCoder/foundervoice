@@ -52,10 +52,13 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* 4 duplicated copies in the track, so this loops after 1/4 of the total width (-25%), not -50%. */
+/* 2 duplicated copies in the track, and .marquee-track is width: max-content
+   (see below), so the track's own box equals its real content width and
+   -50% always lands exactly on the seam between copy 1 and copy 2 — no gap,
+   no snap, regardless of how much text is in the track. */
 @keyframes marquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-25%); }
+  to { transform: translateX(-50%); }
 }
 
 @layer base {
@@ -118,8 +121,15 @@
   animation: var(--animate-pop-in);
 }
 
-/* Infinite horizontal marquee band. Content must be duplicated once (x2) for a seamless loop. */
+/* Infinite horizontal marquee band. Content must be duplicated once (x2) for a
+   seamless loop. width: max-content is load-bearing: a block-level flex
+   container with no explicit width stretches to fill its *parent's* width,
+   not its content's — so translateX(-50%) would move it by 50% of the wrong
+   number and the loop would visibly snap. max-content makes the track's own
+   width equal the sum of its children, so the percentage-based transform is
+   measured against the right thing. */
 @utility marquee-track {
+  width: max-content;
   animation: var(--animate-marquee);
   will-change: transform;
 }

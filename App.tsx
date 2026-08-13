@@ -9,8 +9,8 @@ import { Process } from './components/Process';
 import { Product } from './components/Product';
 import { About } from './components/About';
 import { StartHere } from './components/StartHere';
-import { Pricing } from './components/Pricing';
-import { Philosophy } from './components/Philosophy';
+import { WhyLinkedIn } from './components/WhyLinkedIn';
+import { FAQ } from './components/FAQ';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
 
@@ -36,8 +36,8 @@ function App() {
         <Product />
         <About />
         <StartHere />
-        <Pricing />
-        <Philosophy />
+        <WhyLinkedIn />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />

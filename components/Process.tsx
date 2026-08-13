@@ -5,7 +5,7 @@ import { useInView } from '../hooks/useInView';
 const steps = [
   { number: '01', title: 'We talk', lead: "A short conversation. That's the material." },
   { number: '02', title: 'I extract the stories', lead: "I find what's actually worth saying." },
-  { number: '03', title: 'I write', lead: 'Real posts. No generic AI fluff.' },
+  { number: '03', title: 'I write', lead: "Real posts, in your voice. Not something a prompt could've written." },
   { number: '04', title: 'You approve', lead: 'Change it, approve it, or skip it.' },
 ];
 

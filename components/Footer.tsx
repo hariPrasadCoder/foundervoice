@@ -1,5 +1,5 @@
 import React from 'react';
-import { site, links, booking } from '../config/site';
+import { site, links, booking, calBookingUrl } from '../config/site';
 
 export const Footer: React.FC = () => {
   const calProps = {
@@ -20,9 +20,15 @@ export const Footer: React.FC = () => {
           <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
             LinkedIn
           </a>
-          <button className="hover:text-white transition-colors" {...calProps}>
+          <a
+            href={calBookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition-colors"
+            {...calProps}
+          >
             Book a call
-          </button>
+          </a>
           <a href={links.email} className="hover:text-white transition-colors">
             {site.email}
           </a>

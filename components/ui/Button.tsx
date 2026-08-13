@@ -1,18 +1,28 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type CommonProps = {
   /** primary: black pill (use on white/light bg). inverse: white pill (use on blue/black bg). */
   variant?: 'primary' | 'inverse' | 'outline' | 'ghost';
   showArrow?: boolean;
   fullWidth?: boolean;
-}
+  /**
+   * Real, JS-independent destination. When set, renders an `<a>` instead of a
+   * `<button>` so the click still goes somewhere if the Cal.com embed script
+   * (which normally intercepts the click and opens the modal) fails to load.
+   */
+  href?: string;
+};
+
+type ButtonProps = CommonProps &
+  Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof CommonProps>;
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   showArrow = false,
   fullWidth = false,
+  href,
   className = '',
   ...props
 }) => {
@@ -27,18 +37,28 @@ export const Button: React.FC<ButtonProps> = ({
   } as const;
 
   const widthClass = fullWidth ? 'w-full' : '';
+  const classes = `${base} ${variants[variant]} ${widthClass} ${className}`;
+
+  const content = (
+    <span className="inline-flex items-center gap-2">
+      {children}
+      {showArrow && (
+        <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+      )}
+    </span>
+  );
+
+  if (href) {
+    return (
+      <a href={href} className={classes} {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {content}
+      </a>
+    );
+  }
 
   return (
-    <button
-      className={`${base} ${variants[variant]} ${widthClass} ${className}`}
-      {...props}
-    >
-      <span className="inline-flex items-center gap-2">
-        {children}
-        {showArrow && (
-          <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-        )}
-      </span>
+    <button className={classes} {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {content}
     </button>
   );
 };

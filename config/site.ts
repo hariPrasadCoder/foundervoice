@@ -33,13 +33,12 @@ export const pricing = {
   model: 'Monthly engagement. Cancel anytime.',
   postsPerWeek: '~3 posts/week',
   features: [
-    'Strategy & positioning',
-    'Regular idea extraction',
-    'Approximately 3 posts a week',
-    'Writing and editing',
-    'Publishing & workflow management',
-    'Performance review',
-    'Direct access to Hari',
+    'What to say, and why it matters',
+    'Regular calls to mine for stories',
+    '~3 posts a week, written and edited',
+    'Publishing and scheduling, handled',
+    "A regular look at what's working",
+    'Direct access to Hari, no middlemen',
   ],
 };
 
@@ -48,6 +47,13 @@ export const booking = {
   calLink: 'hari-prasad/foundervoice',
   config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' } as Record<string, string>,
 };
+
+/**
+ * Plain, JS-independent booking URL. Used as a real `href` fallback on every
+ * CTA button, so a click still goes somewhere if the Cal.com embed script
+ * fails to load (blocked, offline, outage) instead of silently doing nothing.
+ */
+export const calBookingUrl = `https://cal.com/${booking.calLink}`;
 
 export const links = {
   linkedin: 'https://www.linkedin.com/in/hariprasad20/',
@@ -109,8 +115,38 @@ export const postUrl = (urn: string) => `https://www.linkedin.com/feed/update/${
  * Add entries here as they become available, e.g. { label: 'BBC' }.
  */
 export const credibilityMentions: { label: string; href?: string }[] = [
-  { label: "MyRealProduct (Antler '26)" },
-  { label: 'Jotterwolf (Columbia Startup Finalist)' },
+  { label: 'TEDx Speaker' },
+  { label: 'Featured in BBC & Financial Express' },
+  { label: 'Collaborated with UNITAR' },
+  { label: 'Partnered with AWS & Google' },
+];
+
+/**
+ * Objections a founder is actually weighing before booking a call, answered
+ * directly. Keep answers short and concrete — this exists to close real
+ * doubts (confidentiality, ownership, control, capacity), not to pad the page.
+ */
+export const faqs: { q: string; a: string }[] = [
+  {
+    q: 'How much does this cost?',
+    a: `From ${pricing.startingPrice}${pricing.cadence}, cancel anytime.`,
+  },
+  {
+    q: "What happens to what I tell you, if we don't end up working together?",
+    a: "Nothing leaves the room. What you tell me on a call stays between us, whether or not we work together after it.",
+  },
+  {
+    q: "Who owns the posts once they're published?",
+    a: 'You do. They go out under your name, on your profile. Nothing about that changes.',
+  },
+  {
+    q: 'Does anything ever go out without my approval?',
+    a: "No. Every post is yours to change, approve, or skip before it's published. Always.",
+  },
+  {
+    q: "What if you're already at 3 clients?",
+    a: "I'll say so on the call, and you can decide if you'd rather wait for the next opening or look elsewhere.",
+  },
 ];
 
 /**

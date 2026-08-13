@@ -131,8 +131,7 @@ export const Product: React.FC = () => {
       </div>
 
       <p className="text-base md:text-lg text-ink font-semibold mt-8 max-w-xl leading-snug">
-        {result.reached} people saw this, organically, for free. What would that be worth as a
-        customer acquisition channel for your product?
+        Most founders pay thousands a month to reach this many people. This post did it for free.
       </p>
       <p className="text-sm text-ink-faint mt-3">Real post. Real numbers. Nothing invented.</p>
     </Section>

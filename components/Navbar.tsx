@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/Button';
-import { booking } from '../config/site';
+import { booking, calBookingUrl } from '../config/site';
 
 const navLinks = [
   { label: 'How it works', href: '#how-it-works' },
   { label: 'About Hari', href: '#about' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'FAQ', href: '#faq' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -47,7 +47,14 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="hidden md:block">
-            <Button variant="primary" className="!px-5 !py-2.5 !text-sm" {...calProps}>
+            <Button
+              variant="primary"
+              className="!px-5 !py-2.5 !text-sm"
+              href={calBookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              {...calProps}
+            >
               Book a free call
             </Button>
           </div>
@@ -77,7 +84,15 @@ export const Navbar: React.FC = () => {
               </a>
             ))}
             <div className="pt-8">
-              <Button fullWidth variant="primary" onClick={() => setIsMobileMenuOpen(false)} {...calProps}>
+              <Button
+                fullWidth
+                variant="primary"
+                href={calBookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)}
+                {...calProps}
+              >
                 Book a free call
               </Button>
             </div>
